@@ -1,0 +1,62 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+	<PropertyGroup>
+		<OutputType>Exe</OutputType>
+		<TargetFramework>net8.0</TargetFramework>
+		<ImplicitUsings>enable</ImplicitUsings>
+		<Nullable>enable</Nullable>
+	</PropertyGroup>
+
+	<ItemGroup>
+		<PackageReference Include="CsvHelper" Version="32.0.2" />
+		<PackageReference Include="Microsoft.Extensions.Configuration" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="8.0.0" />
+		<PackageReference Include="Microsoft.Extensions.Logging" Version="8.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<ProjectReference Include="..\..\Domain\Doc.Pulse.Core\Doc.Pulse.Core.csproj" />
+		<ProjectReference Include="..\Doc.Pulse.Infrastructure\Doc.Pulse.Infrastructure.csproj" />
+	</ItemGroup>
+
+	<ItemGroup>
+		<Content Include="data\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+		<Content Include="settings\**">
+			<CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+		</Content>
+	</ItemGroup>
+	
+	<ItemGroup>
+		<AppsettingsFiles Include="$(SolutionDir)src\Presentation\Doc.Pulse.Api\appsettings.*" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <None Remove="data\CodeCategories.csv" />
+	  <None Remove="data\ObjectCodes.csv" />
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <None Update="Properties\launchSettings.json">
+	    <ExcludeFromSingleFile>true</ExcludeFromSingleFile>
+	    <CopyToPublishDirectory>Never</CopyToPublishDirectory>
+	  </None>
+	</ItemGroup>
+	
+	<ItemGroup>
+	  <Folder Include="settings\" />
+	</ItemGroup>
+
+	<Target Name="PreBuild" AfterTargets="Compile" Condition="'$(Configuration)' == 'Debug'">
+		<Message Text="-----------------------------------------------------------" Importance="high" />
+		<Message Text="Copying Forms Vue Component Lib output JS to dist folder" Importance="high" />
+		<Message Text="SourceFolder - $(SolutionDir)src\Presentation\Doc.Pulse.Api\appsettings.*" Importance="high" />
+		<Message Text="Destination  - $(ProjectDir)settings\" Importance="high" />
+		<Message Text="Files        - @(AppsettingsFiles)" Importance="high" />
+		<Message Text="-----------------------------------------------------------" Importance="high" />
+
+		<Copy SourceFiles="@(AppsettingsFiles)" DestinationFolder="$(ProjectDir)settings/%(RecursiveDir)" OverwriteReadOnlyFiles="true" ContinueOnError="true" />
+	</Target>
+</Project>

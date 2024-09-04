@@ -1,0 +1,19 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Ots.AppDmDoc.Mediator.Abstractions\Ots.AppDmDoc.Abstractions.csproj" />
+    <ProjectReference Include="..\..\Presentation\Doc.Pulse.Contracts\Doc.Pulse.Contracts.csproj" />
+    <ProjectReference Include="..\AppDmDoc.SharedKernel.Core\AppDmDoc.SharedKernel.Core.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Esb.DelegatR.Abstractions" Version="8.0.0" />
+  </ItemGroup>
+
+</Project>
