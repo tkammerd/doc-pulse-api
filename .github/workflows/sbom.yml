@@ -1,0 +1,53 @@
+name: SBOM upload
+
+on:
+  push:
+    branches: [ main, dev ]
+
+  workflow_dispatch:
+
+jobs:
+  SBOM-upload:
+    runs-on: ubuntu-latest
+    env:
+      BUILD_CONFIG: Release
+      GITHUB_NUGET_URL: https://nuget.pkg.github.com/otsgh/index.json
+      GITHUB_NUGET_API_KEY: ${{ secrets.GITHUB_TOKEN }}
+    permissions:
+      id-token: write
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup dotnet
+        uses: actions/setup-dotnet@v4
+        with:
+         dotnet-version: '8.0.x'
+
+      - name: Clean
+        run: dotnet clean . -c $BUILD_CONFIG && dotnet nuget locals all --clear
+
+      - name: Install Dependencies
+        run: dotnet restore .
+
+      - name: Build Solution
+        run: dotnet build .
+
+      - name: Generate SBOM
+        uses: advanced-security/sbom-generator-action@v0.0.1
+        id: sbom
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Upload a Build Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: sbom
+          path: ${{steps.sbom.outputs.fileName }}
+
+      - name: Upload SBOM to Dependency Graph
+        uses: advanced-security/spdx-dependency-submission-action@v0.1.1
+        with:
+          filePath: ${{steps.sbom.outputs.fileName }}/

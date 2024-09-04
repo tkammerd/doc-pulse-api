@@ -1,0 +1,48 @@
+name: "CodeQL"
+
+on:
+  push:
+    branches: [ main, dev ]
+  pull_request:
+    # The branches below must be a subset of the branches above
+    branches: [ main, dev ]
+  schedule:
+    - cron: '23 17 * * 0'
+
+jobs:
+  analyze:
+    name: Analyze
+    runs-on: ubuntu-latest
+    env:  
+      GITHUB_NUGET_API_KEY: ${{ secrets.GITHUB_TOKEN }}
+
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'csharp' ]
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    # Initializes the CodeQL tools for scanning.
+    - name: Initialize CodeQL
+      uses: github/codeql-action/init@v3
+      with:
+        languages: ${{ matrix.language }}
+
+    - name: Setup dotnet
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Install Dependencies
+      run: dotnet restore .
+
+    - name: Build Solution
+      run: dotnet build . --configuration Release --no-restore
+
+    - name: Perform CodeQL Analysis
+      uses: github/codeql-action/analyze@v3
+      with:
+        category: "/language:${{matrix.language}}"

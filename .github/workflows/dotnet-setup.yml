@@ -1,0 +1,88 @@
+name: Initial project setup
+run-name: project setup
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the main branch
+on:
+  - push
+  - workflow_dispatch
+
+env:
+  REPO_NAME: ${{ github.event.repository.name }}
+  PROJECT_NAME: ${{ github.event.repository.name }}
+  WORKFLOW_FILE_NAME: dotnet-setup.yml
+  GITHUB_NUGET_API_KEY: ${{ secrets.GITHUB_TOKEN }}
+
+concurrency:
+  group: init-setup
+  cancel-in-progress: true
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+
+  # This workflow contains a single job called "initial_project_setup"
+  initial_project_setup:
+    if: github.ref == 'refs/heads/main' && github.event.repository.name != 'ots-dotnet-template-webapi'
+
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    permissions: write-all
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+    - name: Set project name
+      run: |
+       echo "PROJECT_NAME=${REPO_NAME/-/.}" >> $GITHUB_ENV
+    - name: Create new initial branch
+      uses: actions/checkout@v4
+
+    - name: Setup .NET Core SDK
+      uses: actions/setup-dotnet@v4
+      with:
+        # SDK version to use.
+        dotnet-version: '8.0.x'
+
+    # create ots templated projects
+    - name: Generate project
+      run: |
+         dotnet new install OTS.Templates
+  
+    - name: Create sln and project
+      run: |
+         dotnet new sln --name ${{ github.event.repository.name }}  --force
+         dotnet new ots-webapi --name ${PROJECT_NAME} --output src/${PROJECT_NAME} --force
+         dotnet new ots-pd-editorConfig --force
+
+    - name: Add projects to sln
+      shell: pwsh
+      run: |
+         dotnet sln ${{ github.event.repository.name }}.sln add (ls -r src/**/*.csproj)
+         dotnet format
+   
+    - name: Remove files
+      run: |
+         git config user.name "GitHub Actions for OTS Templates"
+         git config user.email "<>"
+         git rm README.md NuGet.Config
+         git rm .github/workflows/${WORKFLOW_FILE_NAME}  
+         
+    - name: Add, commit and push new file
+      run: |
+        touch README.md
+        echo "# ${{ github.event.repository.name }}">README.md
+        git add .
+        git commit -m "Initial project"   
+        git pull
+        git push
+
+    # - name: Enable disabled workflows
+    #   run: |
+    #      gh workflow enable build.yml
+    #      gh workflow enable codeql.yml
+    #      gh workflow enable sbom.yml
+
+    - name: Create new dev branch
+      run: |
+        git checkout -b dev
+        git push -u origin dev
