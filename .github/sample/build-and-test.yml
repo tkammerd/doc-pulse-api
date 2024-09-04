@@ -1,0 +1,40 @@
+name: Build And Test
+
+on:
+  #pull_request:
+  #  branches: [ dev, main, release/**, Feature-** ]
+  workflow_call:
+    inputs:
+      BUILD_SOLUTION_NAME:
+        required: true
+        type: string
+    secrets:
+      PACKAGE_TOKEN:
+        required: true
+      OCTOPUS_TOKEN:
+        required: true
+
+env:
+    DEFAULT_BUILD_SOLUTION_NAME: ./Gl.Maintenance.sln 
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+        source-url: https://nuget.pkg.github.com/otsgh/index.json
+      env: 
+        NUGET_AUTH_TOKEN: ${{secrets.PACKAGE_TOKEN}}
+
+    - name: Install dependencies
+      run: dotnet restore "${{ inputs.BUILD_SOLUTION_NAME || env.DEFAULT_BUILD_SOLUTION_NAME }}"
+    - name: Build
+      run: dotnet build "${{ inputs.BUILD_SOLUTION_NAME || env.DEFAULT_BUILD_SOLUTION_NAME }}" --configuration Release --no-restore
+    - name: Test
+      run: dotnet test "${{ inputs.BUILD_SOLUTION_NAME || env.DEFAULT_BUILD_SOLUTION_NAME }}" --no-restore

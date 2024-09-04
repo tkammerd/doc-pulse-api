@@ -1,0 +1,10 @@
+[
+  {
+    "REF": "Mfn.Rcm.Api",
+    "PATH": "src/Presentation/Mfn.Rcm.Api",
+    "PROJ": "Mfn.Rcm.Api.csproj",
+    "OctoPackage": "Mfn.LaFacts.Rcm",
+    "OctoProject": "Revenue Code Maintenance Api",
+    "RelatedPaths": [ "src/" ]
+  }
+]

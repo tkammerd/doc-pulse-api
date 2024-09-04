@@ -1,0 +1,96 @@
+name: Dispatch-Nexus
+
+on:
+  pull_request:
+    branches: [ "main", "dev" ]
+  push:
+    branches: [ main, dev, release/** ]
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number of the release'
+        required: true # generate version action gets something from the push, so have to set
+      channel:
+        description: 'Channel to create release in. Will not create release if empty'
+        type: choice
+        required: true
+        default: "Test" 
+        options:
+          - Test
+          - Release
+          - Default
+      PROJECT_REF_FILTER:
+        description: Specific Project
+        required: false
+        type: choice
+        default: "Mfn.Arc.Api" 
+        options:
+          - Mfn.Arc.Api
+          - FULL
+
+env:
+    OCTOPUS_URL: https://octopus.la.gov/
+    OCTOPUS_SPACE: MFN
+    OCTOPUS_CHANNEL_DEFAULT: Default
+    BUILD_SOLUTION_NAME: ./Revenue Code Maintenance.sln
+    OCTOPUS_CHANNEL_RELEASE: Release
+    PROJ_CONFIG_FILE: ./.github/workflows/config/projects.json
+    #BYPASS_SELECTIVE_BUILD: "FULL"
+
+permissions:
+  contents: write #read  --- write for ending job early
+
+jobs:
+  configure: # note **IMPORTANT** : this is because env variables are not visible in the context of a script call
+    permissions: write-all
+    name: Setup
+    runs-on: ubuntu-latest
+    outputs:
+      octopus-url: ${{ env.OCTOPUS_URL }}
+      octopus-space: ${{ env.OCTOPUS_SPACE }}
+      build-solution-name: ${{ env.BUILD_SOLUTION_NAME }}
+      proj-config-file: ${{ env.PROJ_CONFIG_FILE }}
+      proj-ref-filter: ${{ inputs.PROJECT_REF_FILTER || env.BYPASS_SELECTIVE_BUILD }}
+      ## release-channel: "${{ (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/main')) && env.OCTOPUS_CHANNEL_RELEASE || github.event_name == 'push' && env.OCTOPUS_CHANNEL_DEFAULT || inputs.channel }}"
+      ## release-channel: "${{ (github.event_name == 'push' && (startsWith(github.ref, 'refs/heads/main' || startsWith(github.ref, 'refs/heads/release'))) && env.OCTOPUS_CHANNEL_RELEASE || github.event_name == 'push' && env.OCTOPUS_CHANNEL_DEFAULT || inputs.channel }}"
+      release-channel: "${{ (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/main')) && env.OCTOPUS_CHANNEL_RELEASE || (github.event_name == 'push' && startsWith(github.ref, 'refs/heads/release')) && env.OCTOPUS_CHANNEL_RELEASE || github.event_name == 'push' && env.OCTOPUS_CHANNEL_DEFAULT || inputs.channel }}"
+    steps:
+    - name: Information
+      run: echo Environemnt Var Passthrough
+
+  call-build-and-test-script:
+    name: Build and Test
+    needs: [ configure ]
+    uses: ./.github/workflows/build-and-test.yml
+    with:
+      BUILD_SOLUTION_NAME: ${{ needs.configure.outputs.build-solution-name }}
+    secrets: inherit
+
+  call-code-ql-script:
+    name: Code QL
+    needs: [ configure ]
+    permissions: write-all
+    uses: ./.github/workflows/code-ql.yml
+    with:
+      BUILD_SOLUTION_NAME: ${{ needs.configure.outputs.build-solution-name }}
+    secrets: inherit
+
+  call-build-and-publish-script:
+    name: Publish to Octopus
+    ## if: contains(github.ref, "release") != true && github.ref != 'refs/heads/main'
+    ## if: ${{ github.event_name != 'push' || github.event_name == 'push' && !startsWith(github.ref, 'refs/heads/main') && !startsWith(github.ref, 'refs/heads/release') && !startsWith(github.ref, 'refs/heads/Feature') }}
+    ## if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'push' && (startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/dev')) }} # Manually run the dispatch into the release channel
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event_name == 'push' && (startsWith(github.ref, 'refs/heads/main') || startsWith(github.ref, 'refs/heads/dev') || startsWith(github.ref, 'refs/heads/release')) }} # Manually run the dispatch into the release channel
+    needs: [ configure, call-build-and-test-script, call-code-ql-script ]
+    permissions: write-all
+    uses: ./.github/workflows/publish-octopus-packages-multi_v1.0.2.yml
+    with:
+      version: ${{ inputs.version }}
+      channel: ${{ needs.configure.outputs.release-channel }}
+      OCTOPUS_URL: ${{ needs.configure.outputs.octopus-url }}
+      OCTOPUS_SPACE: ${{ needs.configure.outputs.octopus-space }}
+      PROJ_CONFIG_FILE: ${{ needs.configure.outputs.proj-config-file }}
+      PROJECT_REF_FILTER: ${{ needs.configure.outputs.proj-ref-filter }}
+      BUILD_SOLUTION_NAME: ${{ needs.configure.outputs.build-solution-name }}
+    secrets: inherit
+    

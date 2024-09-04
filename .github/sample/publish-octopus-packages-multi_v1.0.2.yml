@@ -1,0 +1,268 @@
+name: Publish Octopus Packages
+
+on:
+  #push:
+  #  branches: [ dev, Feature-OctopusPublish ]
+  workflow_call:
+    inputs:
+      version:
+        description: 'Version number of the release'
+        required: true 
+        type: string
+      channel:
+        description: 'Channel to create release in. Will not create release if empty'
+        required: true
+        default: "Default" # [Release / Test / Default]
+        type: string
+      OCTOPUS_URL:
+        default: https://octopus.la.gov/
+        type: string
+      OCTOPUS_SPACE:
+        required: true
+        default: LSP
+        type: string
+      BUILD_SOLUTION_NAME:
+        required: true
+        type: string
+      PROJ_CONFIG_FILE:
+        required: true
+        default: ./.github/workflows/config/projects.json
+        type: string
+      PROJECT_REF_FILTER:
+        required: false
+        type: string
+    secrets:
+      PACKAGE_TOKEN:
+        required: true
+      OCTOPUS_TOKEN:
+        required: true
+
+jobs:
+  configure:
+    permissions: write-all
+    name: Configuration
+    runs-on: ubuntu-latest
+    outputs:
+      ## package-version: ${{ inputs.version != '' && inputs.version || steps.generateVersion.outputs.version }}
+      package-version: ${{ inputs.version != '' && inputs.version || steps.safeGenerateVersion.outputs.safeVersion }}
+      config-deploy-json: ${{ steps.modProj.outputs.modified-config }}
+      config-deploy-list: '${{ steps.modProj.outputs.modified-projects }}'
+      config-json: '${{ steps.loadConfig.outputs.projConfigJson }}'
+      
+    steps:
+    - name: Fix path
+      run: |
+        mkdir --parents $HOME/.dotnet/tools
+        echo "$HOME/.dotnet/tools" >> $GITHUB_PATH
+    - name: Get current date
+      id: date
+      run: echo "date=date::$(date +'%Y-%m-%d')" >> $env:GITHUB_OUTPUT
+    # ....................................................................
+    - name: Sparse Checkout (Just .github)
+      uses: actions/checkout@v4
+      with:
+        sparse-checkout: .github
+        sparse-checkout-cone-mode: false
+    - name: Load Projects Config File Json into String
+      id: loadConfig
+      shell: pwsh
+      run: | 
+        $json = Get-Content ${{ inputs.PROJ_CONFIG_FILE }} -Raw
+        $json = $json.replace("%","%25").replace("`n","").replace("`r","")
+
+        echo "::group::Parsed Json"
+        echo $json
+        echo "::endgroup::Parsed Json"
+
+        echo "projConfigJson=${json}" >> $env:GITHUB_OUTPUT
+    # ....................................................................
+    - name: Checkout dps-detect-changed-projects-action Repo
+      uses: actions/checkout@v4
+      with:
+        repository: otsgh/dps-detect-changed-projects-action
+        ref: v1.1.0
+        token: ${{secrets.PACKAGE_TOKEN}}
+        persist-credentials: false
+        path: ./.github/actions/dps-detect-changed-projects-action
+    - name: Determine Projects Updated by PR/Commits
+      id: modProj
+      uses: ./.github/actions/dps-detect-changed-projects-action
+      with: 
+        token: ${{secrets.PACKAGE_TOKEN}}
+        proj-config: ${{ steps.loadConfig.outputs.projConfigJson }}
+        dispatch-filter: ${{ inputs.PROJECT_REF_FILTER }}
+        default-base-branch: main
+        force-full: true
+    # ....................................................................
+    - name: Checkout otsgh/generate-package-version action
+      if: github.event_name == 'push' #|| inputs.version == ''
+      uses: actions/checkout@v4
+      with:
+        repository: otsgh/generate-package-version
+        ref: refs/heads/master
+        token: ${{secrets.PACKAGE_TOKEN}}
+        persist-credentials: false
+        path: ./.github/actions/generate-package-version
+    - name: Generate version
+      if: github.event_name == 'push' #|| inputs.version == ''
+      id: generateVersion
+      uses: ./.github/actions/generate-package-version
+    - name: Remove Special Characters from Package Version
+      if: github.event_name == 'push' #|| inputs.version == ''
+      id: safeGenerateVersion
+      ## run: echo "safeVersion=${steps.generateVersion.outputs.version////_}" >> $GITHUB_ENV
+      shell: pwsh 
+      run: |
+        $genVersion = '${{ steps.generateVersion.outputs.version }}';
+        $safeVersion = $genVersion.replace("/","-").replace("\","-")
+        echo "safeVersion=${safeVersion}" >> $env:GITHUB_OUTPUT
+    # ....................................................................
+
+  package-artifacts:
+    name: Package Artifacts
+    runs-on: ubuntu-latest
+    needs: [ configure ]
+
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+      with:
+        fetch-depth: 0
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+        source-url: https://nuget.pkg.github.com/otsgh/index.json
+      env: 
+        NUGET_AUTH_TOKEN: ${{secrets.PACKAGE_TOKEN}}
+        
+    - name: Install Octopus CLI
+      #uses: OctopusDeploy/install-octopus-cli-action@v3 <--- new version
+      uses: OctopusDeploy/install-octopus-cli-action@v1.1.1
+      with:
+        version: latest
+    
+    - name: Install dependencies
+      run: dotnet restore "$BUILD_SOLUTION_NAME" 
+
+    - name: Execute Targeted Build & Package
+      shell: pwsh 
+      run: |
+        $packagePath = "./packages";
+        $deployList = '${{ needs.configure.outputs.config-deploy-list }}';
+        $json = '${{ needs.configure.outputs.config-deploy-json }}';
+        $jsonFull = '${{ needs.configure.outputs.config-json }}'
+        
+        if (!(Test-Path -Path $packagePath)) {
+          mkdir -p packages
+        }
+
+        $appDeploymentConfigs = $json | ConvertFrom-Json ;
+        foreach($config in $appDeploymentConfigs) {
+          $appRef = $config.REF;
+          $publishPath = "./output-$appRef";
+          $projectFile = "$($config.PATH)/$($config.PROJ)";
+
+          echo "::group::Build Project Details - $appRef"
+            echo "Building Project $appRef -- Package $($config.OctoPackage) -- Path $projectFile"
+            dotnet build "$projectFile" --configuration Release --no-restore
+          echo "::endgroup::Build Project Details - $appRef"
+          echo "::group::Publish Project Details - $appRef"
+            echo "Publishing Project $appRef -- Package $($config.OctoPackage) -- Path $projectFile"
+            dotnet publish "$projectFile" --configuration Release --output "$publishPath" --no-restore
+          echo "::endgroup::Publish Project Details - $appRef"
+          echo "::group::Package Project Details - $appRef"
+            echo "Packaging Project $appRef -- Package $($config.OctoPackage) -- PackagesFolder $publishPath"
+            ## octopus package nuget create --id="$($config.OctoPackage)" --version="${{ steps.generateVersion.outputs.version }}" --base-path="./$outFolder" --out-folder="./packages" <--- new verion
+            octo pack --id="$($config.OctoPackage)" --version="${{ needs.configure.outputs.package-version }}" --basePath="$publishPath" --outFolder="$packagePath"
+          echo "::endgroup::Package Project Details - $appRef"
+        }
+
+        echo "::group::Skipped Builds"
+        $fullAppDeploymentConfigs = $jsonFull | ConvertFrom-Json ;
+        foreach($config in $fullAppDeploymentConfigs) {
+          $appRef = $config.REF
+          $isPrimBuild = $deployList -Match $appRef
+
+          if (-not $isPrimBuild) {
+            echo "No Changes - Skipping $appRef"
+          }
+        }
+        echo "::endgroup::Skipped Builds"
+
+    - name: Archive
+      uses: actions/upload-artifact@v4
+      with:
+       name: app-package
+       path: ./packages
+
+    # - name: Release Snapshot
+    #   if: github.event_name == 'workflow_dispatch'
+    #   id: release-snapshot
+    #   uses: actions/create-release@latest
+    #   env:
+    #     GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    #   with:
+    #     tag_name: "v${{ needs.configure.outputs.package-version }}"
+    #     release_name: "v${{ needs.configure.outputs.package-version }}"
+    #     draft: false
+    #     prerelease: false
+
+
+  push-to-octopus:
+    name: Push to Octopus
+    runs-on: self-hosted
+    needs: [ configure, package-artifacts ]
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Download builds from prior steps
+        uses: actions/download-artifact@v4
+        with:
+          name: app-package
+
+      - name: Upload Packages
+        shell: powershell
+        run: |
+          $packageFileNames = Get-ChildItem "*.nupkg" -Name;
+          foreach($package in $packageFileNames) {
+              $pushCommand = "C:\Utilities\Octopus\octo.exe -push --package=""$package"" --server=""${{ inputs.OCTOPUS_URL }}"" --apiKey=""${{ secrets.OCTOPUS_TOKEN }}"" --overwrite-mode=IgnoreIfExists --space=""${{ inputs.OCTOPUS_SPACE }}""";
+              Write-Host $pushCommand;
+              Invoke-Expression $pushCommand;
+          }
+
+      - name: Create Targeted Releases
+        run: |
+          echo "::group::Input Parameters";
+          echo "List of Updated Projects ${{ needs.configure.outputs.package-version }}"
+          echo "Config for Updated Projects ${{ needs.configure.outputs.config-deploy-json }}"
+          echo "::endgroup::Input Parameters";
+
+          $octoUrl = '${{ inputs.OCTOPUS_URL }}';
+          $octoSpace = '${{ inputs.OCTOPUS_SPACE }}';
+          $pkgVersion = '${{ needs.configure.outputs.package-version }}';
+          $channel = "${{ inputs.channel }}";
+          $json = '${{ needs.configure.outputs.config-deploy-json}}';
+
+          $appDeploymentConfigs = $json | ConvertFrom-Json
+          $packageFileNames = Get-ChildItem "*.nupkg" -Name;
+
+          foreach($config in $appDeploymentConfigs) {
+            $appRef = $config.REF;
+            $octoProject = $config.OctoProject;
+            $octoPackage = $config.OctoPackage;
+            $pkg = "${octoPackage}:${$pkgVersion}";
+            
+            $genReleaseCommand = "C:\Utilities\Octopus\octo.exe create-release --project ""$octoProject"" --server ""$octoUrl"" --space ""$octoSpace"" --apiKey ""${{ secrets.OCTOPUS_TOKEN }}"" --channel ""$channel"" --version ""$pkgVersion"" --packageVersion ""$pkgVersion""";
+            echo "::group::Create Release - $appRef";
+            echo "CONFIG -- $octoUrl -- $octoSpace";
+            echo "Project [$octoProject] -- Package [$octoPackage]";
+            echo "Channel [$channel] -- Version [$pkgVersion]";
+            echo "PKG -- $pkg";
+            Write-Host $genReleaseCommand;
+            Invoke-Expression $genReleaseCommand;
+            ## C:\Utilities\Octopus\octo.exe create-release --project "$octoProject" --server "$octoUrl" --apiKey ${{ secrets.OCTOPUS_TOKEN }} --version "$pkgVersion" --space "$octoSpace" --channel "$channel" --packageVersion "$pkgVersion";
+            echo "::endgroup::Create Release - $appRef";
+          }

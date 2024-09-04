@@ -1,0 +1,47 @@
+name: Deploy Contracts To GitHub Package Repo
+
+on: 
+  # push:
+  #   branches: [ main ]
+  workflow_dispatch:
+    inputs:
+      package-version:
+        description: 'Contracts Package Version number'
+        required: true 
+        type: string
+
+env:
+    project-path: src/Presentation/Gl.Maintenance.Contracts
+    project-name: Gl.Maintenance.Contracts
+    #github_nuget-path: https://nuget.pkg.github.com/otsgh/index.json
+    #github_nuget-source: github
+    #github_user: hyland7
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v4
+  
+    #- name: Setup Nuget Source
+    #  run: dotnet nuget add source --username ${{env.github_user}} --password ${{secrets.OTS_GITHUB_TOKEN}} --store-password-in-clear-text --name ${{env.github_nuget-source}} "${{env.github_nuget-path}}"
+
+    - name: Setup .NET Core
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
+        source-url: https://nuget.pkg.github.com/otsgh/index.json
+      env:
+        NUGET_AUTH_TOKEN: ${{secrets.PUBLISH_PACKAGE_TOKEN}}
+    # - name: Build and Package
+    #   run: dotnet build -c Release -o out
+
+    - name: Build Package
+      run: dotnet pack "${{env.project-path}}/${{env.project-name}}.csproj" -p:PackageVersion="${{inputs.package-version}}" -o:out
+    
+    - name: Push to Github Packages
+      run: |
+        dotnet nuget push "./out/${{env.project-name}}.*.nupkg" --skip-duplicate --no-symbols
+        # dotnet nuget push ./out/Arc.Maintenance.Contracts.*.nupkg --api-key ${{secrets.OTS_GITHUB_TOKEN}} --source "${{env.github_nuget-source}}" --skip-duplicate --no-symbols
