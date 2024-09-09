@@ -32,9 +32,9 @@ public partial class AppDbContext : DbContext
 
     // ///////////////////////////////////////////////////////////////
     // Define Entity DB Sets (in remainder of AppDbContext partial):
-    // public virtual DbSet<UserStub> UserStubs { get; set; }
-    // public virtual DbSet<ObjectCode> ObjectCodes { get; set; }
     // public virtual DbSet<CodeCategory> CodeCategories { get; set; }
+    // public virtual DbSet<ObjectCode> ObjectCodes { get; set; }
+    // public virtual DbSet<UserStub> UserStubs { get; set; }
     // ///////////////////////////////////////////////////////////////
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder)

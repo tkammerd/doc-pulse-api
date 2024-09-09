@@ -1,21 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Doc.Pulse.Core.Attributes;
 
 namespace Doc.Pulse.Core.Entities;
 
 public partial class CodeCategory
 {
-    public CodeCategory()
-    {
-        ObjectCodes = new HashSet<ObjectCode>();
-    }
     public int CategoryNumber { get; set; }
+
+    [PaginateFilterAttribute]
     public string CategoryShortName { get; set; } = null!;
+
+    [PaginateFilterAttribute]
     public string? CategoryName { get; set; }
+
     public bool Inactive { get; set; } = false;
 
-    public virtual ICollection<ObjectCode>? ObjectCodes { get; set; }
+    public virtual ICollection<ObjectCode>? ObjectCodes { get; set; } = new HashSet<ObjectCode>();
 }
