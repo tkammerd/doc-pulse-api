@@ -14,5 +14,5 @@ public partial class CodeCategory
 
     public bool Inactive { get; set; } = false;
 
-    public virtual ICollection<ObjectCode>? ObjectCodes { get; set; } = new HashSet<ObjectCode>();
+    public virtual ICollection<ObjectCode>? ObjectCodes { get; set; } = [];
 }
