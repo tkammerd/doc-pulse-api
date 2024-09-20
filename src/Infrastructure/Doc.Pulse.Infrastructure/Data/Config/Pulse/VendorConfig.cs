@@ -16,7 +16,7 @@ internal class VendorConfig : IEntityTypeConfiguration<Vendor>
             .HasColumnName("VendorId");
 
         builder.Property(e => e.VendorName)
-            //.IsRequired()
+            .IsRequired()
             .HasColumnType("varchar")
             .HasMaxLength(255);
 
