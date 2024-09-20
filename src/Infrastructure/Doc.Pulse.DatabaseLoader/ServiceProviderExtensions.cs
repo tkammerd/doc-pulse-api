@@ -41,8 +41,16 @@ internal static class ServiceProviderExtensions
             }
             Console.WriteLine($"Reset All Identities!");
 
+            // Purge from most dependent to least dependent in order to avoid cascading deletes or foreign key errors
+            dbContext.Receipts.Purge();
+            dbContext.Rfps.Purge();
+            dbContext.Appropriations.Purge();
             dbContext.ObjectCodes.Purge();
             dbContext.CodeCategories.Purge();
+            dbContext.Vendors.Purge();
+            dbContext.Programs.Purge();
+            dbContext.Agencies.Purge();
+            dbContext.AccountOrganizations.Purge();
             dbContext.UserStubs.Purge();
 
             dbContext.SaveChanges();
@@ -50,9 +58,9 @@ internal static class ServiceProviderExtensions
         return serviceProvider;
     }
 
-    public static ServiceProvider SeedData<T>(this ServiceProvider serviceProvider, IEnumerable<T> entities) where T : class
+    public static ServiceProvider SeedUnidentifiedData<T>(this ServiceProvider serviceProvider, IEnumerable<T> entities) where T : class
     {
-        Console.WriteLine($"Seed {(typeof(T)?.Name ?? "Unknown")}(s)");
+        Console.WriteLine($"Seed {(typeof(T)?.Name ?? "Unknown")}(s) with default identifiers");
 
         using (var scope = serviceProvider.CreateScope())
         {
@@ -60,9 +68,24 @@ internal static class ServiceProviderExtensions
             var dbContext = scopedServices.GetRequiredService<AppDbContext>();
 
             dbContext.Database.EnsureCreated();
-            //SeedData.PopulateTestData(db);
 
             dbContext.SeedRangeWithIdentityInsertOff(entities.ToList());
+        }
+
+        return serviceProvider;
+    }
+    public static ServiceProvider SeedIdentifiedData<T>(this ServiceProvider serviceProvider, IEnumerable<T> entities) where T : class
+    {
+        Console.WriteLine($"Seed {(typeof(T)?.Name ?? "Unknown")}(s) with specified Identifiers");
+
+        using (var scope = serviceProvider.CreateScope())
+        {
+            var scopedServices = scope.ServiceProvider;
+            var dbContext = scopedServices.GetRequiredService<AppDbContext>();
+
+            dbContext.Database.EnsureCreated();
+
+            dbContext.SeedRangeWithIdentityInsertOn(entities.ToList());
         }
 
         return serviceProvider;

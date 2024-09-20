@@ -4,6 +4,7 @@ namespace Doc.Pulse.DatabaseLoader.SeedModels;
 
 internal class ObjectCodeDto
 {
+    public int ObjectCodeId { get; set; }
     public int CodeNumber { get; set; }
     public string CodeName { get; set; } = null!;
     public int CodeCategoryId { get; set; }
@@ -13,6 +14,7 @@ internal class ObjectCodeDto
     {
         return new T()
         {
+            Id = ObjectCodeId,
             CodeNumber = CodeNumber,
             CodeName = ParsingHelpers.TrimPreventNull(CodeName, "CategoryShortName"),
             CodeCategoryId = CodeCategoryId,

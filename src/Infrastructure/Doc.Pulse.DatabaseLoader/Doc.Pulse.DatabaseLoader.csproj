@@ -34,8 +34,12 @@
 	</ItemGroup>
 	
 	<ItemGroup>
+	  <None Remove="data\AccountOrganizations.csv" />
+	  <None Remove="data\Agencies.csv" />
 	  <None Remove="data\CodeCategories.csv" />
-	  <None Remove="data\ObjectCodes.csv" />
+	  <None Remove="data\Programs.csv" />
+	  <None Remove="data\UserStubs.csv" />
+	  <None Remove="data\Vendors.csv" />
 	</ItemGroup>
 	
 	<ItemGroup>

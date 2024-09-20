@@ -23,6 +23,167 @@ namespace Doc.Pulse.Infrastructure.Data.Migrations
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
 
+            modelBuilder.Entity("Doc.Pulse.Core.Entities.AccountOrganization", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("AccountOrganizationId");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AccountOrganizationNumber")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar");
+
+                    b.Property<string>("CostCenterDescription")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+
+                    b.Property<int?>("CreatedUserId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Inactive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset>("Modified")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+
+                    b.Property<int?>("ModifiedUserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedUserId");
+
+                    b.HasIndex("ModifiedUserId");
+
+                    b.ToTable("AccountOrganizations", "Pulse");
+                });
+
+            modelBuilder.Entity("Doc.Pulse.Core.Entities.Agency", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("AgencyId");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("AgencyName")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+
+                    b.Property<int?>("CreatedUserId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Inactive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset>("Modified")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+
+                    b.Property<int?>("ModifiedUserId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedUserId");
+
+                    b.HasIndex("ModifiedUserId");
+
+                    b.ToTable("Agencies", "Pulse");
+                });
+
+            modelBuilder.Entity("Doc.Pulse.Core.Entities.Appropriation", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("AppropriationId");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTimeOffset>("Created")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+
+                    b.Property<int?>("CreatedUserId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("CurrentModifiedAmount")
+                        .HasColumnType("money");
+
+                    b.Property<decimal?>("EncumberedAmount")
+                        .HasColumnType("money");
+
+                    b.Property<decimal?>("ExpendedAmount")
+                        .HasColumnType("money");
+
+                    b.Property<string>("Facility")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar");
+
+                    b.Property<short>("FiscalYear")
+                        .HasColumnType("smallint");
+
+                    b.Property<DateTimeOffset>("Modified")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+
+                    b.Property<int?>("ModifiedUserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ObjectCodeId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("PreEncumberedAmount")
+                        .HasColumnType("money");
+
+                    b.Property<decimal?>("PriorYearActualAmount")
+                        .HasColumnType("money");
+
+                    b.Property<int>("ProgramId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("ProjectedAmount")
+                        .HasColumnType("money");
+
+                    b.Property<decimal?>("TotalObligated")
+                        .HasColumnType("money");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedUserId");
+
+                    b.HasIndex("ModifiedUserId");
+
+                    b.HasIndex("ObjectCodeId");
+
+                    b.HasIndex("ProgramId");
+
+                    b.ToTable("Appropriations", "Pulse");
+                });
+
             modelBuilder.Entity("Doc.Pulse.Core.Entities.CodeCategory", b =>
                 {
                     b.Property<int>("Id")
@@ -122,6 +283,272 @@ namespace Doc.Pulse.Infrastructure.Data.Migrations
                     b.ToTable("ObjectCodes", "Pulse");
                 });
 
+            modelBuilder.Entity("Doc.Pulse.Core.Entities.Program", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("ProgramId");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTimeOffset>("Created")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+
+                    b.Property<int?>("CreatedUserId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Inactive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset>("Modified")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+
+                    b.Property<int?>("ModifiedUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ProgramCode")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar");
+
+                    b.Property<string>("ProgramDescription")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar");
+
+                    b.Property<string>("ProgramName")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedUserId");
+
+                    b.HasIndex("ModifiedUserId");
+
+                    b.ToTable("Programs", "Pulse");
+                });
+
+            modelBuilder.Entity("Doc.Pulse.Core.Entities.RFP", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("RfpId");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<int>("AccountOrganizationId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("AgencyId")
+                        .HasColumnType("int");
+
+                    b.Property<decimal?>("AmountObligated")
+                        .HasColumnType("money");
+
+                    b.Property<string>("CheckOrDocumentNumber")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar");
+
+                    b.Property<string>("Comments")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar");
+
+                    b.Property<string>("Completed")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+
+                    b.Property<int?>("CreatedUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Description")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar");
+
+                    b.Property<string>("Facility")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar");
+
+                    b.Property<short>("FiscalYear")
+                        .HasColumnType("smallint");
+
+                    b.Property<DateTimeOffset>("Modified")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+
+                    b.Property<int?>("ModifiedUserId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ObjectCodeId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("ProgramId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("PurchaseOrderNumber")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar");
+
+                    b.Property<string>("ReportingCategory")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar");
+
+                    b.Property<string>("RequestedBy")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar");
+
+                    b.Property<DateTimeOffset?>("RfpDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("RfpNumber")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar");
+
+                    b.Property<int>("VendorId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("VerifiedOnIsis")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("AccountOrganizationId");
+
+                    b.HasIndex("AgencyId");
+
+                    b.HasIndex("CreatedUserId");
+
+                    b.HasIndex("ModifiedUserId");
+
+                    b.HasIndex("ObjectCodeId");
+
+                    b.HasIndex("ProgramId");
+
+                    b.HasIndex("VendorId");
+
+                    b.ToTable("RFPs", "Pulse");
+                });
+
+            modelBuilder.Entity("Doc.Pulse.Core.Entities.Receipt", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("ReceiptId");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal?>("AmountInIsis")
+                        .HasColumnType("money");
+
+                    b.Property<DateTimeOffset?>("CheckDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("CheckNumber")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+
+                    b.Property<int?>("CreatedUserId")
+                        .HasColumnType("int");
+
+                    b.Property<short>("FiscalYear")
+                        .HasColumnType("smallint");
+
+                    b.Property<DateTimeOffset>("Modified")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+
+                    b.Property<int?>("ModifiedUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset?>("ReceiptDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("ReceiptNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReceiverNumber")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar");
+
+                    b.Property<decimal?>("ReceivingReportAmount")
+                        .HasColumnType("money");
+
+                    b.Property<int?>("RfpId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedUserId");
+
+                    b.HasIndex("ModifiedUserId");
+
+                    b.HasIndex("RfpId");
+
+                    b.ToTable("Receipts", "Pulse");
+                });
+
+            modelBuilder.Entity("Doc.Pulse.Core.Entities.Vendor", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("VendorId");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<DateTimeOffset>("Created")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+
+                    b.Property<int?>("CreatedUserId")
+                        .HasColumnType("int");
+
+                    b.Property<bool>("Inactive")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTimeOffset>("Modified")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+
+                    b.Property<int?>("ModifiedUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("VendorName")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedUserId");
+
+                    b.HasIndex("ModifiedUserId");
+
+                    b.ToTable("Vendors", "Pulse");
+                });
+
             modelBuilder.Entity("Doc.Pulse.Core.Entities._Kernel.UserStub", b =>
                 {
                     b.Property<int>("Id")
@@ -157,6 +584,73 @@ namespace Doc.Pulse.Infrastructure.Data.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("UserStubs", "Pulse");
+                });
+
+            modelBuilder.Entity("Doc.Pulse.Core.Entities.AccountOrganization", b =>
+                {
+                    b.HasOne("Doc.Pulse.Core.Entities._Kernel.UserStub", "CreatedUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedUserId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Doc.Pulse.Core.Entities._Kernel.UserStub", "ModifiedUser")
+                        .WithMany()
+                        .HasForeignKey("ModifiedUserId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("CreatedUser");
+
+                    b.Navigation("ModifiedUser");
+                });
+
+            modelBuilder.Entity("Doc.Pulse.Core.Entities.Agency", b =>
+                {
+                    b.HasOne("Doc.Pulse.Core.Entities._Kernel.UserStub", "CreatedUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedUserId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Doc.Pulse.Core.Entities._Kernel.UserStub", "ModifiedUser")
+                        .WithMany()
+                        .HasForeignKey("ModifiedUserId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("CreatedUser");
+
+                    b.Navigation("ModifiedUser");
+                });
+
+            modelBuilder.Entity("Doc.Pulse.Core.Entities.Appropriation", b =>
+                {
+                    b.HasOne("Doc.Pulse.Core.Entities._Kernel.UserStub", "CreatedUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedUserId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Doc.Pulse.Core.Entities._Kernel.UserStub", "ModifiedUser")
+                        .WithMany()
+                        .HasForeignKey("ModifiedUserId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Doc.Pulse.Core.Entities.ObjectCode", "ObjectCode")
+                        .WithMany("Appropriations")
+                        .HasForeignKey("ObjectCodeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Doc.Pulse.Core.Entities.Program", "Program")
+                        .WithMany("Appropriations")
+                        .HasForeignKey("ProgramId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("CreatedUser");
+
+                    b.Navigation("ModifiedUser");
+
+                    b.Navigation("ObjectCode");
+
+                    b.Navigation("Program");
                 });
 
             modelBuilder.Entity("Doc.Pulse.Core.Entities.CodeCategory", b =>
@@ -201,9 +695,157 @@ namespace Doc.Pulse.Infrastructure.Data.Migrations
                     b.Navigation("ModifiedUser");
                 });
 
+            modelBuilder.Entity("Doc.Pulse.Core.Entities.Program", b =>
+                {
+                    b.HasOne("Doc.Pulse.Core.Entities._Kernel.UserStub", "CreatedUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedUserId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Doc.Pulse.Core.Entities._Kernel.UserStub", "ModifiedUser")
+                        .WithMany()
+                        .HasForeignKey("ModifiedUserId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("CreatedUser");
+
+                    b.Navigation("ModifiedUser");
+                });
+
+            modelBuilder.Entity("Doc.Pulse.Core.Entities.RFP", b =>
+                {
+                    b.HasOne("Doc.Pulse.Core.Entities.AccountOrganization", "AccountOrganization")
+                        .WithMany("Rfps")
+                        .HasForeignKey("AccountOrganizationId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Doc.Pulse.Core.Entities.Agency", "Agency")
+                        .WithMany("Rfps")
+                        .HasForeignKey("AgencyId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Doc.Pulse.Core.Entities._Kernel.UserStub", "CreatedUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedUserId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Doc.Pulse.Core.Entities._Kernel.UserStub", "ModifiedUser")
+                        .WithMany()
+                        .HasForeignKey("ModifiedUserId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Doc.Pulse.Core.Entities.ObjectCode", "ObjectCode")
+                        .WithMany("Rfps")
+                        .HasForeignKey("ObjectCodeId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Doc.Pulse.Core.Entities.Program", "Program")
+                        .WithMany("Rfps")
+                        .HasForeignKey("ProgramId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("Doc.Pulse.Core.Entities.Vendor", "Vendor")
+                        .WithMany("Rfps")
+                        .HasForeignKey("VendorId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("AccountOrganization");
+
+                    b.Navigation("Agency");
+
+                    b.Navigation("CreatedUser");
+
+                    b.Navigation("ModifiedUser");
+
+                    b.Navigation("ObjectCode");
+
+                    b.Navigation("Program");
+
+                    b.Navigation("Vendor");
+                });
+
+            modelBuilder.Entity("Doc.Pulse.Core.Entities.Receipt", b =>
+                {
+                    b.HasOne("Doc.Pulse.Core.Entities._Kernel.UserStub", "CreatedUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedUserId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Doc.Pulse.Core.Entities._Kernel.UserStub", "ModifiedUser")
+                        .WithMany()
+                        .HasForeignKey("ModifiedUserId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Doc.Pulse.Core.Entities.RFP", "Rfp")
+                        .WithMany("Receipts")
+                        .HasForeignKey("RfpId");
+
+                    b.Navigation("CreatedUser");
+
+                    b.Navigation("ModifiedUser");
+
+                    b.Navigation("Rfp");
+                });
+
+            modelBuilder.Entity("Doc.Pulse.Core.Entities.Vendor", b =>
+                {
+                    b.HasOne("Doc.Pulse.Core.Entities._Kernel.UserStub", "CreatedUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedUserId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Doc.Pulse.Core.Entities._Kernel.UserStub", "ModifiedUser")
+                        .WithMany()
+                        .HasForeignKey("ModifiedUserId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.Navigation("CreatedUser");
+
+                    b.Navigation("ModifiedUser");
+                });
+
+            modelBuilder.Entity("Doc.Pulse.Core.Entities.AccountOrganization", b =>
+                {
+                    b.Navigation("Rfps");
+                });
+
+            modelBuilder.Entity("Doc.Pulse.Core.Entities.Agency", b =>
+                {
+                    b.Navigation("Rfps");
+                });
+
             modelBuilder.Entity("Doc.Pulse.Core.Entities.CodeCategory", b =>
                 {
                     b.Navigation("ObjectCodes");
+                });
+
+            modelBuilder.Entity("Doc.Pulse.Core.Entities.ObjectCode", b =>
+                {
+                    b.Navigation("Appropriations");
+
+                    b.Navigation("Rfps");
+                });
+
+            modelBuilder.Entity("Doc.Pulse.Core.Entities.Program", b =>
+                {
+                    b.Navigation("Appropriations");
+
+                    b.Navigation("Rfps");
+                });
+
+            modelBuilder.Entity("Doc.Pulse.Core.Entities.RFP", b =>
+                {
+                    b.Navigation("Receipts");
+                });
+
+            modelBuilder.Entity("Doc.Pulse.Core.Entities.Vendor", b =>
+                {
+                    b.Navigation("Rfps");
                 });
 #pragma warning restore 612, 618
         }
