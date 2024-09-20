@@ -32,7 +32,6 @@ public class FakeResolveUserService : IResolveUserService
             }, testScheme));
 
         return UserWithClaims.New(principal);
-        //return new TestPrincipal(new Claim("DocUserDivision", SeedData.Categories[0].Name));
     }
 }
 
