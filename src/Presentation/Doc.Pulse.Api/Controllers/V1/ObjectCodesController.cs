@@ -5,7 +5,6 @@ using Doc.Pulse.Api.Helpers;
 using Doc.Pulse.Contracts.Communications.V1.ObjectCodes.Commands;
 using Doc.Pulse.Contracts.Communications.V1.ObjectCodes.Queries;
 using Doc.Pulse.Core.Entities._Kernel;
-using Doc.Pulse.Infrastructure.Abstractions;
 using FluentResults;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;

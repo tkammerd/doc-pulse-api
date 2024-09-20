@@ -1,4 +1,4 @@
-﻿namespace Doc.Pulse.Contracts.Communications.V1.ObjectCodes.Queries;
+﻿namespace Doc.Pulse.Contracts.Communications.V1.ObjectCodes.Commands;
 
 public class ObjectCodeHardDeleteCmd
 {

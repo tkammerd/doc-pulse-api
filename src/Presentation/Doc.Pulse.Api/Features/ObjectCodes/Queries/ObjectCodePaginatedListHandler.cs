@@ -52,7 +52,7 @@ public partial class ObjectCodePaginatedListHandler
                     return response.WithError<Response>(new FailedPaginatedQueryBuild());
 
                 var entities = await paginatedQuery.Queryable
-                    //.ProjectTo<ListIsisCodeDto>(_mapper.ConfigurationProvider)  /// awh - no support for custom resolvers -- https://docs.automapper.org/en/stable/Queryable-Extensions.html#supported-mapping-options
+                    //.ProjectTo<ObjectCodeDto>(_mapper.ConfigurationProvider)  /// awh - no support for custom resolvers -- https://docs.automapper.org/en/stable/Queryable-Extensions.html#supported-mapping-options
                     .ToListAsync(cancellationToken);
                 var dtos = _mapper.Map<List<ObjectCodeListDto>>(entities);
 
