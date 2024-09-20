@@ -53,6 +53,11 @@ public class ObjectCodesController(ILogger<ObjectCodesController> logger, IMedia
         return result.ToActionResult();
     }
 
+
+#pragma warning disable CS1572  // XML comment has a param tag, but there is no parameter by that name
+#pragma warning disable CS1573  // Parameter has no matching param tag in the XML comment (but other parameters do)
+#pragma warning disable ASP0018 // Unused route parameter
+                                // Justification: Swagger finds param "Id" as a property of param "query"
     /// <summary>
     /// Get Simple ObjectCode
     /// </summary>
@@ -65,7 +70,10 @@ public class ObjectCodesController(ILogger<ObjectCodesController> logger, IMedia
     /// </remarks>
     /// <returns>The value of the ObjectCode with the specified Id</returns>
     [HttpGet("{Id}", Name = "Get Simple ObjectCode by id")]
+#pragma warning restore CS1572  // XML comment has a param tag, but there is no parameter by that name
+#pragma warning restore ASP0018 // Unused route parameter
     public async Task<IActionResult> GetById([FromRoute] ObjectCodeGetByIdQry query)
+#pragma warning restore CS1573  // Parameter has no matching param tag in the XML comment (but other parameters do)
     {
         var result = await _mediator.Send(new ObjectCodeGetByIdHandler.Request() { Query = query });
         return result.ToActionResult();
@@ -92,6 +100,11 @@ public class ObjectCodesController(ILogger<ObjectCodesController> logger, IMedia
         return result.ToActionResult();
     }
 
+
+#pragma warning disable CS1572  // XML comment has a param tag, but there is no parameter by that name
+#pragma warning disable CS1573  // Parameter has no matching param tag in the XML comment (but other parameters do)
+#pragma warning disable ASP0018 // Unused route parameter
+                                // Justification: Swagger finds param "Id" as a property of param "query"
     /// <summary>
     /// Get ObjectCode without extensions
     /// </summary>
@@ -104,7 +117,10 @@ public class ObjectCodesController(ILogger<ObjectCodesController> logger, IMedia
     /// </remarks>
     /// <returns>The value of the ObjectCode with the specified Id</returns>
     [HttpGet("raw/{Id}", Name = "Get ObjectCode by id without extensions")]
+#pragma warning restore CS1572  // XML comment has a param tag, but there is no parameter by that name
+#pragma warning restore ASP0018 // Unused route parameter
     public async Task<IActionResult> GetById_WithoutExtensions([FromRoute] ObjectCodeGetByIdQry query)
+#pragma warning restore CS1573  // Parameter has no matching param tag in the XML comment (but other parameters do)
     {
         try
         {
@@ -147,7 +163,7 @@ public class ObjectCodesController(ILogger<ObjectCodesController> logger, IMedia
                 }
             }
         }
-        catch (Exception)
+        catch (Exception ex)
         {
             var response = new ApiResponse<string>(HttpStatusCode.InternalServerError)
             {
@@ -155,6 +171,7 @@ public class ObjectCodesController(ILogger<ObjectCodesController> logger, IMedia
                 Message = "Something Terrible has Happened and The Request Could Not be Routed.",
                 IsSuccess = false,
             };
+            _logger.LogError(ex, "({ResponseUid}) {Message}", response.ResponseUid, response.Message);
 
             return StatusCode((int)HttpStatusCode.InternalServerError, response);
         }

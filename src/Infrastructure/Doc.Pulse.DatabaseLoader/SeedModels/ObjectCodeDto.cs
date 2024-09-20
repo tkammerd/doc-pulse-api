@@ -7,7 +7,7 @@ internal class ObjectCodeDto
     public int ObjectCodeId { get; set; }
     public int CodeNumber { get; set; }
     public string CodeName { get; set; } = null!;
-    public int CodeCategoryId { get; set; }
+    public int? CodeCategoryId { get; set; }
     public bool Inactive { get; set; } = false;
 
     public T ToEntity<T>() where T : ObjectCode, new()
@@ -16,7 +16,7 @@ internal class ObjectCodeDto
         {
             Id = ObjectCodeId,
             CodeNumber = CodeNumber,
-            CodeName = ParsingHelpers.TrimPreventNull(CodeName, "CategoryShortName"),
+            CodeName = ParsingHelpers.TrimPreventNull(CodeName, "CodeName"),
             CodeCategoryId = CodeCategoryId,
             Inactive = Inactive
         };

@@ -2,16 +2,15 @@
 
 public static class AppDmDocWebApplication
 {
+    private static readonly string _env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT")!;
 
     public static WebApplicationBuilder CreateBuilder(params string[] args)
     {
-        var _env = Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT");
-
         var builder = (_env != "dev"
             ? WebApplication.CreateBuilder(args)
             : WebApplication.CreateBuilder(new WebApplicationOptions
             {
-                EnvironmentName = Environments.Development, /// Need to Trust Self Signed Certificates
+                EnvironmentName = Environments.Development, // Need to Trust Self Signed Certificates
                 Args = args
             }));
 

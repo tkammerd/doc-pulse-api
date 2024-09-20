@@ -106,7 +106,6 @@ try
     // Configure the HTTP request pipeline.
     if (!app.Environment.IsProduction())
     {
-        app.SeedTestData();
         app.UseSwaggerDocumentation();
 
         // //////////////////////////////////////////////////////////////////////////

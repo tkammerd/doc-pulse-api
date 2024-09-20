@@ -10,7 +10,7 @@ public partial class ObjectCode
     [PaginateFilterAttribute]
     public string CodeName { get; set; } = null!;
 
-    public int CodeCategoryId { get; set; }
+    public int? CodeCategoryId { get; set; }
 
     public bool Inactive { get; set; } = false;
 
