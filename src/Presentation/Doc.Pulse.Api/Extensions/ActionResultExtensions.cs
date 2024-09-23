@@ -19,7 +19,7 @@ public static class ActionResultExtensions
         //ResultException rsltException = null;
 
         if (result == null)
-            return new BadRequestObjectResult(new { Message = "Something Unexpceted Went Wrong." });
+            return new BadRequestObjectResult(new { Message = "Something Unexpected Went Wrong." });
         else if (result.IsSuccess == true)
         {
             var rslt = new OkObjectResult(ApiResponseFactory.Ok(result.Value, version:apiVersion));
@@ -57,7 +57,7 @@ public static class ActionResultExtensions
             return new StatusCodeResult(StatusCodes.Status500InternalServerError);
         }
         else
-            return new BadRequestObjectResult(new { Message = "Something Unexpceted Went Wrong." });
+            return new BadRequestObjectResult(new { Message = "Something Unexpected Went Wrong." });
     }
 }
 
