@@ -33,18 +33,19 @@ public class VendorUpdateHandler
     {
         public async override Task<Response> Handle(Request request, CancellationToken cancellationToken)
         {
+            var cmd = request.Command;
             Response response = new();
 
             try
             {
                 var entity = await _dbContext.Vendors
                     .AsTracking(QueryTrackingBehavior.TrackAll)
-                    .SingleOrDefaultAsync(o => o.Id == request.Command.Id, cancellationToken);
+                    .SingleOrDefaultAsync(o => o.Id == cmd.Id, cancellationToken);
                 if (entity == null)
-                    return response.WithError<Response>(new EntityNotFound(request.Command.Id.ToString()));
+                    return response.WithError<Response>(new EntityNotFound(cmd.Id.ToString()));
 
-                entity.VendorName = request?.Command?.VendorName ?? "";
-                entity.Inactive = request?.Command?.Inactive ?? false;
+                entity.VendorName = cmd?.VendorName ?? "";
+                entity.Inactive = cmd?.Inactive ?? false;
 
                 await _dbContext.SaveChangesAsync(cancellationToken);
 
