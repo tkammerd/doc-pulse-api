@@ -4,6 +4,7 @@ namespace Doc.Pulse.Core.Entities;
 
 public partial class AccountOrganization
 {
+    [PaginateFilterAttribute]
     public string AccountOrganizationNumber { get; set; } = null!;
 
     [PaginateFilterAttribute]
