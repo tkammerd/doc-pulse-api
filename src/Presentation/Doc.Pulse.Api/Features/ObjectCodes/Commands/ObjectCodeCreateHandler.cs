@@ -23,7 +23,7 @@ public class ObjectCodeCreateHandler
     {
         public Validator()
         {
-            RuleFor(o => o.CodeName).NotNull().Length(5, 255);
+            RuleFor(o => o.CodeName).NotNull().Length(7, 255);
         }
     }
 

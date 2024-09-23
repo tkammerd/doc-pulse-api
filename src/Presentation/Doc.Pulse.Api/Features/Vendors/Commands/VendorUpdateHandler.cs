@@ -25,7 +25,7 @@ public class VendorUpdateHandler
         {
             RuleFor(o => o.Id).NotNull().NotEqual(0)
                 .WithMessage($"Id not valid: Please indicate a valid Identifier.");
-            RuleFor(o => o.VendorName).NotNull().Length(5, 255);
+            RuleFor(o => o.VendorName).NotNull().Length(3, 255);
         }
     }
 

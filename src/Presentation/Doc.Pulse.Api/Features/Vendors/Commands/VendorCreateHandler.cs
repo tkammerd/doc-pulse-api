@@ -23,7 +23,7 @@ public class VendorCreateHandler
     {
         public Validator()
         {
-            RuleFor(o => o.VendorName).NotNull().Length(5, 255);
+            RuleFor(o => o.VendorName).NotNull().Length(3, 255);
         }
     }
 
