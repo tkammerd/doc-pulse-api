@@ -4,6 +4,15 @@ namespace Doc.Pulse.Api.Extensions;
 
 public static class StringHandlingExtensions
 {
+    public static string Truncate(this string source, int length)
+    {
+        if (source.Length > length)
+        {
+            source = source.Substring(0, length);
+        }
+        return source;
+    }
+
     public static string SplitCamelCase(this string str)
     {
         return Regex.Replace(
