@@ -5,6 +5,9 @@ namespace Doc.Pulse.Core.Entities;
 public partial class Receipt
 {
     [PaginateFilterAttribute]
+    public string Facility { get; set; } = null!;
+
+    [PaginateFilterAttribute]
     public int FiscalYear { get; set; }
 
     public int ReceiptNumber { get; set; }

@@ -15,6 +15,11 @@ internal class ReceiptConfig : IEntityTypeConfiguration<Receipt>
             .IsRequired()
             .HasColumnName("ReceiptId");
 
+        builder.Property(e => e.Facility)
+            .IsRequired()
+            .HasColumnType("varchar")
+            .HasMaxLength(255);
+
         builder.Property(e => e.FiscalYear)
             .IsRequired()
             .HasColumnType("smallint");
