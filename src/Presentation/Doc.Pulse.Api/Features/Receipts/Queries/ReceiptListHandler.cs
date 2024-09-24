@@ -40,9 +40,7 @@ public class ReceiptListHandler
                 var entities = await _dbContext.Receipts
                     .OrderBy(o => o.Id)
                     .ToListAsync(cancellationToken);
-                Console.WriteLine("DEBUG: Physical fetch of receipt entities complete (with no ordering).");
                 var dtos = _mapper.Map<List<ReceiptListDto>>(entities);
-                Console.WriteLine("DEBUG: Mapping of receipt entities to dtos complete.");
 
                 response.WithValue<Response>(new ReceiptListResponse()
                 {
@@ -50,12 +48,10 @@ public class ReceiptListHandler
                     CountAvailable = dtos.Count,
                     CountTotal = dtos.Count
                 });
-                Console.WriteLine("DEBUG: Response for receipts constructed.");
             }
             catch (Exception exception)
             {
                 response.WithException(exception);
-                Console.WriteLine("DEBUG: Exception response for receipts added.");
             }
 
             return response;

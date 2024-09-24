@@ -27,16 +27,6 @@ public class ReceiptsController(ILogger<ReceiptsController> logger, IMediator me
         {
             Query = new ReceiptListQry()
         });
-        Console.WriteLine("DEBUG: Receipt list request completed.");
-        var returnVal = result.ToActionResult();
-        //foreach(var r in result.Value.Items)
-        //{
-        //    Console.WriteLine("{0,7} {1,-6} {2,4} {3,5} {4,6} {5} {6,10:N2} {7,10:N2} {8,-10} {9,-12} {10}",
-        //        r.Id, r.Facility.Truncate(6), r.FiscalYear, r.ReceiptNumber, r.RfpId,
-        //        (r.ReceiptDate ?? DateTimeOffset.MinValue).ToString("d", DateTimeFormatInfo.InvariantInfo),
-        //        r.ReceivingReportAmount, r.AmountInIsis, r.ReceiverNumber?.Truncate(10), r.CheckNumber?.Truncate(12),
-        //        (r.CheckDate ?? DateTimeOffset.MinValue).ToString("d", DateTimeFormatInfo.InvariantInfo));
-        //}
         return result.ToActionResult();
     }
 
