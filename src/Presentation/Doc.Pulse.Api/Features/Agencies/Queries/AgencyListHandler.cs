@@ -38,7 +38,7 @@ public class AgencyListHandler
             try
             {
                 var entities = await _dbContext.Agencies
-                    .OrderBy(o => o.AgencyName)
+                    .OrderBy(o => o.Id)
                     .ToListAsync(cancellationToken);
 
                 var dtos = _mapper.Map<List<AgencyListDto>>(entities);

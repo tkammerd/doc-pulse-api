@@ -38,7 +38,7 @@ public class ObjectCodeListHandler
             try
             {
                 var entities = await _dbContext.ObjectCodes
-                    .OrderBy(o => o.CodeNumber)
+                    .OrderBy(o => o.Id)
                     .ToListAsync(cancellationToken);
 
                 var dtos = _mapper.Map<List<ObjectCodeListDto>>(entities);

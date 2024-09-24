@@ -38,7 +38,7 @@ public class AccountOrganizationListHandler
             try
             {
                 var entities = await _dbContext.AccountOrganizations
-                    .OrderBy(o => o.AccountOrganizationNumber)
+                    .OrderBy(o => o.Id)
                     .ToListAsync(cancellationToken);
 
                 var dtos = _mapper.Map<List<AccountOrganizationListDto>>(entities);

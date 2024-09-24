@@ -38,7 +38,7 @@ public class VendorListHandler
             try
             {
                 var entities = await _dbContext.Vendors
-                    .OrderBy(o => o.VendorName)
+                    .OrderBy(o => o.Id)
                     .ToListAsync(cancellationToken);
 
                 var dtos = _mapper.Map<List<VendorListDto>>(entities);
