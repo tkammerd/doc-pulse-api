@@ -168,7 +168,7 @@ namespace Doc.Pulse.Infrastructure.Data.Migrations
                 {
                     VendorId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
-                    VendorName = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: true),
+                    VendorName = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
                     Inactive = table.Column<bool>(type: "bit", nullable: false),
                     Created = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false, defaultValueSql: "SYSDATETIMEOFFSET()"),
                     CreatedUserId = table.Column<int>(type: "int", nullable: true),
@@ -201,7 +201,7 @@ namespace Doc.Pulse.Infrastructure.Data.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     CodeNumber = table.Column<int>(type: "int", nullable: false),
                     CodeName = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
-                    CodeCategoryId = table.Column<int>(type: "int", nullable: false),
+                    CodeCategoryId = table.Column<int>(type: "int", nullable: true),
                     Inactive = table.Column<bool>(type: "bit", nullable: false),
                     Created = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: false, defaultValueSql: "SYSDATETIMEOFFSET()"),
                     CreatedUserId = table.Column<int>(type: "int", nullable: true),
@@ -216,8 +216,7 @@ namespace Doc.Pulse.Infrastructure.Data.Migrations
                         column: x => x.CodeCategoryId,
                         principalSchema: "Pulse",
                         principalTable: "CodeCategories",
-                        principalColumn: "CodeCategoryId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "CodeCategoryId");
                     table.ForeignKey(
                         name: "FK_ObjectCodes_UserStubs_CreatedUserId",
                         column: x => x.CreatedUserId,
@@ -287,7 +286,7 @@ namespace Doc.Pulse.Infrastructure.Data.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "RFPs",
+                name: "Rfps",
                 schema: "Pulse",
                 columns: table => new
                 {
@@ -318,49 +317,49 @@ namespace Doc.Pulse.Infrastructure.Data.Migrations
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_RFPs", x => x.RfpId);
+                    table.PrimaryKey("PK_Rfps", x => x.RfpId);
                     table.ForeignKey(
-                        name: "FK_RFPs_AccountOrganizations_AccountOrganizationId",
+                        name: "FK_Rfps_AccountOrganizations_AccountOrganizationId",
                         column: x => x.AccountOrganizationId,
                         principalSchema: "Pulse",
                         principalTable: "AccountOrganizations",
                         principalColumn: "AccountOrganizationId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RFPs_Agencies_AgencyId",
+                        name: "FK_Rfps_Agencies_AgencyId",
                         column: x => x.AgencyId,
                         principalSchema: "Pulse",
                         principalTable: "Agencies",
                         principalColumn: "AgencyId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RFPs_ObjectCodes_ObjectCodeId",
+                        name: "FK_Rfps_ObjectCodes_ObjectCodeId",
                         column: x => x.ObjectCodeId,
                         principalSchema: "Pulse",
                         principalTable: "ObjectCodes",
                         principalColumn: "ObjectCodeId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RFPs_Programs_ProgramId",
+                        name: "FK_Rfps_Programs_ProgramId",
                         column: x => x.ProgramId,
                         principalSchema: "Pulse",
                         principalTable: "Programs",
                         principalColumn: "ProgramId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_RFPs_UserStubs_CreatedUserId",
+                        name: "FK_Rfps_UserStubs_CreatedUserId",
                         column: x => x.CreatedUserId,
                         principalSchema: "Pulse",
                         principalTable: "UserStubs",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_RFPs_UserStubs_ModifiedUserId",
+                        name: "FK_Rfps_UserStubs_ModifiedUserId",
                         column: x => x.ModifiedUserId,
                         principalSchema: "Pulse",
                         principalTable: "UserStubs",
                         principalColumn: "Id");
                     table.ForeignKey(
-                        name: "FK_RFPs_Vendors_VendorId",
+                        name: "FK_Rfps_Vendors_VendorId",
                         column: x => x.VendorId,
                         principalSchema: "Pulse",
                         principalTable: "Vendors",
@@ -375,6 +374,7 @@ namespace Doc.Pulse.Infrastructure.Data.Migrations
                 {
                     ReceiptId = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Facility = table.Column<string>(type: "varchar(255)", maxLength: 255, nullable: false),
                     FiscalYear = table.Column<short>(type: "smallint", nullable: false),
                     ReceiptNumber = table.Column<int>(type: "int", nullable: false),
                     RfpId = table.Column<int>(type: "int", nullable: true),
@@ -393,10 +393,10 @@ namespace Doc.Pulse.Infrastructure.Data.Migrations
                 {
                     table.PrimaryKey("PK_Receipts", x => x.ReceiptId);
                     table.ForeignKey(
-                        name: "FK_Receipts_RFPs_RfpId",
+                        name: "FK_Receipts_Rfps_RfpId",
                         column: x => x.RfpId,
                         principalSchema: "Pulse",
-                        principalTable: "RFPs",
+                        principalTable: "Rfps",
                         principalColumn: "RfpId");
                     table.ForeignKey(
                         name: "FK_Receipts_UserStubs_CreatedUserId",
@@ -521,45 +521,45 @@ namespace Doc.Pulse.Infrastructure.Data.Migrations
                 column: "RfpId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RFPs_AccountOrganizationId",
+                name: "IX_Rfps_AccountOrganizationId",
                 schema: "Pulse",
-                table: "RFPs",
+                table: "Rfps",
                 column: "AccountOrganizationId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RFPs_AgencyId",
+                name: "IX_Rfps_AgencyId",
                 schema: "Pulse",
-                table: "RFPs",
+                table: "Rfps",
                 column: "AgencyId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RFPs_CreatedUserId",
+                name: "IX_Rfps_CreatedUserId",
                 schema: "Pulse",
-                table: "RFPs",
+                table: "Rfps",
                 column: "CreatedUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RFPs_ModifiedUserId",
+                name: "IX_Rfps_ModifiedUserId",
                 schema: "Pulse",
-                table: "RFPs",
+                table: "Rfps",
                 column: "ModifiedUserId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RFPs_ObjectCodeId",
+                name: "IX_Rfps_ObjectCodeId",
                 schema: "Pulse",
-                table: "RFPs",
+                table: "Rfps",
                 column: "ObjectCodeId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RFPs_ProgramId",
+                name: "IX_Rfps_ProgramId",
                 schema: "Pulse",
-                table: "RFPs",
+                table: "Rfps",
                 column: "ProgramId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_RFPs_VendorId",
+                name: "IX_Rfps_VendorId",
                 schema: "Pulse",
-                table: "RFPs",
+                table: "Rfps",
                 column: "VendorId");
 
             migrationBuilder.CreateIndex(
@@ -587,7 +587,7 @@ namespace Doc.Pulse.Infrastructure.Data.Migrations
                 schema: "Pulse");
 
             migrationBuilder.DropTable(
-                name: "RFPs",
+                name: "Rfps",
                 schema: "Pulse");
 
             migrationBuilder.DropTable(

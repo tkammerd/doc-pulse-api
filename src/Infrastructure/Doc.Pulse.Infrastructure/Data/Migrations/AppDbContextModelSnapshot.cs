@@ -242,7 +242,7 @@ namespace Doc.Pulse.Infrastructure.Data.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("CodeCategoryId")
+                    b.Property<int?>("CodeCategoryId")
                         .HasColumnType("int");
 
                     b.Property<string>("CodeName")
@@ -333,7 +333,77 @@ namespace Doc.Pulse.Infrastructure.Data.Migrations
                     b.ToTable("Programs", "Pulse");
                 });
 
-            modelBuilder.Entity("Doc.Pulse.Core.Entities.RFP", b =>
+            modelBuilder.Entity("Doc.Pulse.Core.Entities.Receipt", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasColumnName("ReceiptId");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
+
+                    b.Property<decimal?>("AmountInIsis")
+                        .HasColumnType("money");
+
+                    b.Property<DateTimeOffset?>("CheckDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("CheckNumber")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar");
+
+                    b.Property<DateTimeOffset>("Created")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+
+                    b.Property<int?>("CreatedUserId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("Facility")
+                        .IsRequired()
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar");
+
+                    b.Property<short>("FiscalYear")
+                        .HasColumnType("smallint");
+
+                    b.Property<DateTimeOffset>("Modified")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("datetimeoffset")
+                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
+
+                    b.Property<int?>("ModifiedUserId")
+                        .HasColumnType("int");
+
+                    b.Property<DateTimeOffset?>("ReceiptDate")
+                        .HasColumnType("datetimeoffset");
+
+                    b.Property<int>("ReceiptNumber")
+                        .HasColumnType("int");
+
+                    b.Property<string>("ReceiverNumber")
+                        .HasMaxLength(255)
+                        .HasColumnType("varchar");
+
+                    b.Property<decimal?>("ReceivingReportAmount")
+                        .HasColumnType("money");
+
+                    b.Property<int?>("RfpId")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("CreatedUserId");
+
+                    b.HasIndex("ModifiedUserId");
+
+                    b.HasIndex("RfpId");
+
+                    b.ToTable("Receipts", "Pulse");
+                });
+
+            modelBuilder.Entity("Doc.Pulse.Core.Entities.Rfp", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -440,72 +510,7 @@ namespace Doc.Pulse.Infrastructure.Data.Migrations
 
                     b.HasIndex("VendorId");
 
-                    b.ToTable("RFPs", "Pulse");
-                });
-
-            modelBuilder.Entity("Doc.Pulse.Core.Entities.Receipt", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasColumnName("ReceiptId");
-
-                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
-
-                    b.Property<decimal?>("AmountInIsis")
-                        .HasColumnType("money");
-
-                    b.Property<DateTimeOffset?>("CheckDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<string>("CheckNumber")
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar");
-
-                    b.Property<DateTimeOffset>("Created")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetimeoffset")
-                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
-
-                    b.Property<int?>("CreatedUserId")
-                        .HasColumnType("int");
-
-                    b.Property<short>("FiscalYear")
-                        .HasColumnType("smallint");
-
-                    b.Property<DateTimeOffset>("Modified")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("datetimeoffset")
-                        .HasDefaultValueSql("SYSDATETIMEOFFSET()");
-
-                    b.Property<int?>("ModifiedUserId")
-                        .HasColumnType("int");
-
-                    b.Property<DateTimeOffset?>("ReceiptDate")
-                        .HasColumnType("datetimeoffset");
-
-                    b.Property<int>("ReceiptNumber")
-                        .HasColumnType("int");
-
-                    b.Property<string>("ReceiverNumber")
-                        .HasMaxLength(255)
-                        .HasColumnType("varchar");
-
-                    b.Property<decimal?>("ReceivingReportAmount")
-                        .HasColumnType("money");
-
-                    b.Property<int?>("RfpId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CreatedUserId");
-
-                    b.HasIndex("ModifiedUserId");
-
-                    b.HasIndex("RfpId");
-
-                    b.ToTable("Receipts", "Pulse");
+                    b.ToTable("Rfps", "Pulse");
                 });
 
             modelBuilder.Entity("Doc.Pulse.Core.Entities.Vendor", b =>
@@ -537,6 +542,7 @@ namespace Doc.Pulse.Infrastructure.Data.Migrations
                         .HasColumnType("int");
 
                     b.Property<string>("VendorName")
+                        .IsRequired()
                         .HasMaxLength(255)
                         .HasColumnType("varchar");
 
@@ -674,9 +680,7 @@ namespace Doc.Pulse.Infrastructure.Data.Migrations
                 {
                     b.HasOne("Doc.Pulse.Core.Entities.CodeCategory", "CodeCategory")
                         .WithMany("ObjectCodes")
-                        .HasForeignKey("CodeCategoryId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("CodeCategoryId");
 
                     b.HasOne("Doc.Pulse.Core.Entities._Kernel.UserStub", "CreatedUser")
                         .WithMany()
@@ -712,7 +716,30 @@ namespace Doc.Pulse.Infrastructure.Data.Migrations
                     b.Navigation("ModifiedUser");
                 });
 
-            modelBuilder.Entity("Doc.Pulse.Core.Entities.RFP", b =>
+            modelBuilder.Entity("Doc.Pulse.Core.Entities.Receipt", b =>
+                {
+                    b.HasOne("Doc.Pulse.Core.Entities._Kernel.UserStub", "CreatedUser")
+                        .WithMany()
+                        .HasForeignKey("CreatedUserId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Doc.Pulse.Core.Entities._Kernel.UserStub", "ModifiedUser")
+                        .WithMany()
+                        .HasForeignKey("ModifiedUserId")
+                        .OnDelete(DeleteBehavior.NoAction);
+
+                    b.HasOne("Doc.Pulse.Core.Entities.Rfp", "Rfp")
+                        .WithMany("Receipts")
+                        .HasForeignKey("RfpId");
+
+                    b.Navigation("CreatedUser");
+
+                    b.Navigation("ModifiedUser");
+
+                    b.Navigation("Rfp");
+                });
+
+            modelBuilder.Entity("Doc.Pulse.Core.Entities.Rfp", b =>
                 {
                     b.HasOne("Doc.Pulse.Core.Entities.AccountOrganization", "AccountOrganization")
                         .WithMany("Rfps")
@@ -769,29 +796,6 @@ namespace Doc.Pulse.Infrastructure.Data.Migrations
                     b.Navigation("Vendor");
                 });
 
-            modelBuilder.Entity("Doc.Pulse.Core.Entities.Receipt", b =>
-                {
-                    b.HasOne("Doc.Pulse.Core.Entities._Kernel.UserStub", "CreatedUser")
-                        .WithMany()
-                        .HasForeignKey("CreatedUserId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("Doc.Pulse.Core.Entities._Kernel.UserStub", "ModifiedUser")
-                        .WithMany()
-                        .HasForeignKey("ModifiedUserId")
-                        .OnDelete(DeleteBehavior.NoAction);
-
-                    b.HasOne("Doc.Pulse.Core.Entities.RFP", "Rfp")
-                        .WithMany("Receipts")
-                        .HasForeignKey("RfpId");
-
-                    b.Navigation("CreatedUser");
-
-                    b.Navigation("ModifiedUser");
-
-                    b.Navigation("Rfp");
-                });
-
             modelBuilder.Entity("Doc.Pulse.Core.Entities.Vendor", b =>
                 {
                     b.HasOne("Doc.Pulse.Core.Entities._Kernel.UserStub", "CreatedUser")
@@ -838,7 +842,7 @@ namespace Doc.Pulse.Infrastructure.Data.Migrations
                     b.Navigation("Rfps");
                 });
 
-            modelBuilder.Entity("Doc.Pulse.Core.Entities.RFP", b =>
+            modelBuilder.Entity("Doc.Pulse.Core.Entities.Rfp", b =>
                 {
                     b.Navigation("Receipts");
                 });
