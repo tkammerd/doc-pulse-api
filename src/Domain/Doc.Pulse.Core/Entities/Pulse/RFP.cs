@@ -2,6 +2,6 @@
 
 namespace Doc.Pulse.Core.Entities;
 
-public partial class RFP : AuditableEntityBase<int>
+public partial class Rfp : AuditableEntityBase<int>
 {
 }

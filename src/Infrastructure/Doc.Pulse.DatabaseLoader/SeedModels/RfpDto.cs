@@ -24,7 +24,7 @@ internal class RfpDto
     public string? VerifiedOnIsis { get; set; }
     public string? RequestedBy { get; set; }
 
-    public T ToEntity<T>() where T : RFP, new()
+    public T ToEntity<T>() where T : Rfp, new()
     {
         return new T()
         {

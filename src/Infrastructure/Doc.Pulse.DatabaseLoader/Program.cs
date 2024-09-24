@@ -13,7 +13,7 @@ var codeCategoriesPath = new FileInfo(@"data\CodeCategories.csv");
 var objectCodesPath = new FileInfo(@"data\ObjectCodes.csv");
 var vendorsPath = new FileInfo(@"data\Vendors.csv");
 var appropriationsPath = new FileInfo(@"data\Appropriations.csv");
-var rfpsPath = new FileInfo(@"data\RFPs.csv");
+var rfpsPath = new FileInfo(@"data\Rfps.csv");
 var receiptsPath = new FileInfo(@"data\Receipts.csv");
 var userStubsPath = new FileInfo(@"data\UserStubs.csv");
 
@@ -34,7 +34,7 @@ var vendors = Helpers.ParseRecords<VendorDto>(vendorsPath.FullName)
 var appropriations = Helpers.ParseRecords<AppropriationDto>(appropriationsPath.FullName)
     .Select(o => o.ToEntity<Appropriation>()).ToList();
 var rfps = Helpers.ParseRecords<RfpDto>(rfpsPath.FullName)
-    .Select(o => o.ToEntity<RFP>()).ToList();
+    .Select(o => o.ToEntity<Rfp>()).ToList();
 var receipts = Helpers.ParseRecords<ReceiptDto>(receiptsPath.FullName)
     .Select(o => o.ToEntity<Receipt>()).ToList();
 var userStubs = Helpers.ParseRecords<UserStubDto>(userStubsPath.FullName)

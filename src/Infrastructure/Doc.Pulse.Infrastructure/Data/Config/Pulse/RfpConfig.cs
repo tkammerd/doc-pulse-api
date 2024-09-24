@@ -4,11 +4,11 @@ using Microsoft.EntityFrameworkCore.Metadata.Builders;
 
 namespace Doc.Pulse.Infrastructure.Data.Config.Pulse;
 
-internal class RfpConfig : IEntityTypeConfiguration<RFP>
+internal class RfpConfig : IEntityTypeConfiguration<Rfp>
 {
-    public void Configure(EntityTypeBuilder<RFP> builder)
+    public void Configure(EntityTypeBuilder<Rfp> builder)
     {
-        builder.ToTable("RFPs", "Pulse")
+        builder.ToTable("Rfps", "Pulse")
             .HasKey(e => e.Id);
 
         builder.Property(e => e.Id)

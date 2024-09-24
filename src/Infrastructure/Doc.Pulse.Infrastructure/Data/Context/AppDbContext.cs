@@ -13,7 +13,7 @@ public partial class AppDbContext : DbContext
     public virtual DbSet<ObjectCode> ObjectCodes { get; set; }
     public virtual DbSet<Program> Programs { get; set; }
     public virtual DbSet<Receipt> Receipts { get; set; }
-    public virtual DbSet<RFP> Rfps { get; set; }
+    public virtual DbSet<Rfp> Rfps { get; set; }
     public virtual DbSet<Vendor> Vendors { get; set; }
     public virtual DbSet<UserStub> UserStubs { get; set; }
 

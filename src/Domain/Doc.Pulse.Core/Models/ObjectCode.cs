@@ -17,5 +17,5 @@ public partial class ObjectCode
     public virtual CodeCategory? CodeCategory { get; set; }
 
     public virtual ICollection<Appropriation> Appropriations { get; set; } = [];
-    public virtual ICollection<RFP> Rfps { get; set; } = [];
+    public virtual ICollection<Rfp> Rfps { get; set; } = [];
 }

@@ -26,5 +26,5 @@ public partial class Receipt
     [PaginateFilterAttribute]
     public DateTimeOffset? CheckDate { get; set; }
 
-    public virtual RFP? Rfp { get; set; }
+    public virtual Rfp? Rfp { get; set; }
 }

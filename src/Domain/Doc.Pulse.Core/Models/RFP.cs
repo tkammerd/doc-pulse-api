@@ -2,7 +2,7 @@
 
 namespace Doc.Pulse.Core.Entities;
 
-public partial class RFP
+public partial class Rfp
 {
     [PaginateFilterAttribute]
     public int FiscalYear { get; set; }

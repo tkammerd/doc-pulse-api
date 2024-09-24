@@ -12,5 +12,5 @@ public partial class AccountOrganization
     
     public bool Inactive { get; set; } = false;
     
-    public virtual ICollection<RFP> Rfps { get; set; } = [];
+    public virtual ICollection<Rfp> Rfps { get; set; } = [];
 }
