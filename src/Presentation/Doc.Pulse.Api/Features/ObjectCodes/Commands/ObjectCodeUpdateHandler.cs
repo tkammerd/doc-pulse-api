@@ -20,15 +20,6 @@ public class ObjectCodeUpdateHandler
     }
     public class Response : MediatorResult<CommandResponse> { }
 
-    public class Validator : AbstractValidator<ObjectCodeUpdateCmd>
-    {
-        public Validator()
-        {
-            RuleFor(o => o.Id).NotNull().NotEqual(0)
-                .WithMessage($"Id not valid: Please indicate a valid Identifier.");
-            RuleFor(o => o.CodeName).NotNull().Length(7, 255);
-        }
-    }
     public class DbContextValidator : AbstractValidator<ObjectCodeUpdateCmd>
     {
         private readonly AppDbContext _dbContext;

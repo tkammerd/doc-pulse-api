@@ -20,15 +20,6 @@ public class AgencyUpdateHandler
     }
     public class Response : MediatorResult<CommandResponse> { }
 
-    public class Validator : AbstractValidator<AgencyUpdateCmd>
-    {
-        public Validator()
-        {
-            RuleFor(o => o.Id).NotNull().NotEqual(0)
-                .WithMessage($"Id not valid: Please indicate a valid Identifier.");
-            RuleFor(o => o.AgencyName).NotNull().Length(3, 255);
-        }
-    }
     public class DbContextValidator : AbstractValidator<AgencyUpdateCmd>
     {
         private readonly AppDbContext _dbContext;
