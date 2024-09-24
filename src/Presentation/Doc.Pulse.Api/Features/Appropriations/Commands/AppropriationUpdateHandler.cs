@@ -66,12 +66,12 @@ public class AppropriationUpdateHandler
                 entity.FiscalYear = cmd?.FiscalYear ?? 0;
                 entity.ProgramId = cmd?.ProgramId ?? 0;
                 entity.ObjectCodeId = cmd?.ObjectCodeId ?? 0;
-                entity.CurrentModifiedAmount = cmd?.CurrentModifiedAmount ?? 0;
-                entity.PreEncumberedAmount = cmd?.PreEncumberedAmount ?? 0;
-                entity.EncumberedAmount = cmd?.EncumberedAmount ?? 0;
-                entity.ExpendedAmount = cmd?.ExpendedAmount ?? 0;
-                entity.ProjectedAmount = cmd?.ProjectedAmount ?? 0;
-                entity.PriorYearActualAmount = cmd?.PriorYearActualAmount ?? 0;
+                entity.CurrentModifiedAmount = cmd?.CurrentModifiedAmount;
+                entity.PreEncumberedAmount = cmd?.PreEncumberedAmount;
+                entity.EncumberedAmount = cmd?.EncumberedAmount;
+                entity.ExpendedAmount = cmd?.ExpendedAmount;
+                entity.ProjectedAmount = cmd?.ProjectedAmount;
+                entity.PriorYearActualAmount = cmd?.PriorYearActualAmount;
                 entity.TotalObligated = cmd?.TotalObligated;
 
                 await _dbContext.SaveChangesAsync(cancellationToken);
