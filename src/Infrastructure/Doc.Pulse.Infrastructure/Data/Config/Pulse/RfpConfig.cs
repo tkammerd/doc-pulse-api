@@ -15,16 +15,16 @@ internal class RfpConfig : IEntityTypeConfiguration<Rfp>
             .IsRequired()
             .HasColumnName("RfpId");
 
+        builder.Property(e => e.Facility)
+            .IsRequired()
+            .HasColumnType("varchar")
+            .HasMaxLength(255);
+
         builder.Property(e => e.FiscalYear)
             .IsRequired()
             .HasColumnType("smallint");
 
         builder.Property(e => e.RfpNumber)
-            .IsRequired()
-            .HasColumnType("varchar")
-            .HasMaxLength(255);
-
-        builder.Property(e => e.Facility)
             .IsRequired()
             .HasColumnType("varchar")
             .HasMaxLength(255);

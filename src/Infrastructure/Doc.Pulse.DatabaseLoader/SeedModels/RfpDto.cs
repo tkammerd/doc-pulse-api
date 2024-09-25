@@ -5,9 +5,9 @@ namespace Doc.Pulse.DatabaseLoader.SeedModels;
 internal class RfpDto
 {
     public int RfpId { get; set; }
+    public string Facility { get; set; } = null!;
     public int FiscalYear { get; set; }
     public string RfpNumber { get; set; } = null!;
-    public string Facility { get; set; } = null!;
     public DateTimeOffset? RfpDate { get; set; }
     public string? Description { get; set; }
     public int ObjectCodeId { get; set; }
