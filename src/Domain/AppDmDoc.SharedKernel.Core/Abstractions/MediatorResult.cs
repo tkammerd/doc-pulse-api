@@ -1,7 +1,6 @@
-﻿using FluentResults;
-using AppDmDoc.SharedKernel.Core.Abstractions.Trouble;
+﻿using AppDmDoc.SharedKernel.Core.Abstractions.Trouble;
 using AppDmDoc.SharedKernel.Core.Entities;
-using Doc.Pulse.Core.Abstractions;
+using FluentResults;
 using System.Diagnostics;
 
 namespace AppDmDoc.SharedKernel.Core.Abstractions;
@@ -37,7 +36,7 @@ public class MediatorResult<T> : Result<T>, IMediatorResult
         where TResponse : class, IMediatorResult
         where TMediatorError : MediatorError, new()
     {
-        if (!args.Any())
+        if (args.Length == 0)
         {
             base.WithError(new TMediatorError());
         }

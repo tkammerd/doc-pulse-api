@@ -1,16 +1,13 @@
 ﻿using AppDmDoc.SharedKernel.Core.Abstractions.Trouble;
-using Doc.Pulse.Api.Extensions;
 using Doc.Pulse.Api.Features.Receipts.Commands;
 using Doc.Pulse.Api.Features.Receipts.Queries;
 using Doc.Pulse.Api.Helpers;
 using Doc.Pulse.Contracts.Communications.V1.Receipts.Commands;
 using Doc.Pulse.Contracts.Communications.V1.Receipts.Queries;
 using Doc.Pulse.Core.Entities._Kernel;
-using Doc.Pulse.Infrastructure.Abstractions;
 using FluentResults;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
-using System.Globalization;
 using System.Net;
 
 namespace Doc.Pulse.Api.Controllers.V1;

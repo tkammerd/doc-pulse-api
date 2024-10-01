@@ -1,17 +1,14 @@
-﻿using FluentValidation;
-using AppDmDoc.SharedKernel.Core.Abstractions;
+﻿using AppDmDoc.SharedKernel.Core.Abstractions;
 using AppDmDoc.SharedKernel.Core.Trouble.Errors;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
+using Doc.Pulse.Api.Extensions;
 using Doc.Pulse.Contracts.Communications.V1.Rfps.Commands;
 using Doc.Pulse.Infrastructure.Abstractions;
 using Doc.Pulse.Infrastructure.Data;
-using Ots.AppDmDoc.Abstractions.AutoMapper;
 using Doc.Pulse.Infrastructure.Extensions;
-using Doc.Pulse.Api.Extensions;
-using Doc.Pulse.Core.Entities;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
-using System.Xml.Linq;
+using FluentValidation;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Ots.AppDmDoc.Abstractions.AutoMapper;
 
 namespace Doc.Pulse.Api.Features.Rfps.Commands;
 

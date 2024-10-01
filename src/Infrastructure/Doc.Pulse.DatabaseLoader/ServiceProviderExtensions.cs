@@ -1,8 +1,6 @@
 ﻿using Doc.Pulse.Infrastructure.Data;
 using Doc.Pulse.Infrastructure.Extensions;
-using Microsoft.AspNetCore.Mvc.Diagnostics;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Doc.Pulse.DatabaseLoader;

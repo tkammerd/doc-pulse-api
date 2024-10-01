@@ -1,6 +1,4 @@
-﻿using Doc.Pulse.Core.Abstractions;
-
-namespace Doc.Pulse.Infrastructure.Util;
+﻿namespace Doc.Pulse.Infrastructure.Util;
 
 //public class DateTimeProvider : IDateTimeProvider
 //{

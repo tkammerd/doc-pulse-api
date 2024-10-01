@@ -1,7 +1,5 @@
 ﻿using AppDmDoc.SharedKernel.Core.Abstractions;
-using Microsoft.AspNetCore.Http;
 using System.Net;
-using System.Runtime.CompilerServices;
 
 namespace Doc.Pulse.Core.Entities._Kernel;
 

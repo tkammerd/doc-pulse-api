@@ -1,6 +1,4 @@
-﻿using Doc.Pulse.Contracts.Communications.V1.ObjectCodes.Queries;
-
-namespace Doc.Pulse.Contracts.Communications.V1.ObjectCodes.Commands;
+﻿namespace Doc.Pulse.Contracts.Communications.V1.ObjectCodes.Commands;
 
 public class ObjectCodeUpdateCmd
 {

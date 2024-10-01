@@ -1,6 +1,4 @@
-﻿using Doc.Pulse.Contracts.Communications.V1.Vendors.Queries;
-
-namespace Doc.Pulse.Contracts.Communications.V1.Vendors.Commands;
+﻿namespace Doc.Pulse.Contracts.Communications.V1.Vendors.Commands;
 
 public class VendorUpdateCmd
 {

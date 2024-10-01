@@ -1,6 +1,4 @@
-﻿using Doc.Pulse.Contracts.Communications.V1.CodeCategories.Queries;
-
-namespace Doc.Pulse.Contracts.Communications.V1.CodeCategories.Commands;
+﻿namespace Doc.Pulse.Contracts.Communications.V1.CodeCategories.Commands;
 
 public class CodeCategoryUpdateCmd
 {

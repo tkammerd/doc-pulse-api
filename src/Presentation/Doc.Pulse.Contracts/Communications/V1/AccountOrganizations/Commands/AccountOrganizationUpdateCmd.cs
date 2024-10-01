@@ -1,6 +1,4 @@
-﻿using Doc.Pulse.Contracts.Communications.V1.AccountOrganizations.Queries;
-
-namespace Doc.Pulse.Contracts.Communications.V1.AccountOrganizations.Commands;
+﻿namespace Doc.Pulse.Contracts.Communications.V1.AccountOrganizations.Commands;
 
 public class AccountOrganizationUpdateCmd
 {

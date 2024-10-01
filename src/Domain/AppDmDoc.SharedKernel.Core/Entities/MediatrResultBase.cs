@@ -1,7 +1,6 @@
-﻿using AppDmDoc.SharedKernel.Core.Entities;
-using Doc.Pulse.Core.Abstractions;
+﻿using AppDmDoc.SharedKernel.Core.Abstractions;
 
-namespace Doc.Pulse.Core.Entities._Kernel;
+namespace AppDmDoc.SharedKernel.Core.Entities;
 
 public class MediatrResultBase : FluentResults.Result, IMediatorResult
 {

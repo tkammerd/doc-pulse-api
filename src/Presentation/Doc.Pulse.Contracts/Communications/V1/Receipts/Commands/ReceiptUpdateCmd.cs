@@ -1,6 +1,4 @@
-﻿using Doc.Pulse.Contracts.Communications.V1.Receipts.Queries;
-
-namespace Doc.Pulse.Contracts.Communications.V1.Receipts.Commands;
+﻿namespace Doc.Pulse.Contracts.Communications.V1.Receipts.Commands;
 
 public class ReceiptUpdateCmd
 {

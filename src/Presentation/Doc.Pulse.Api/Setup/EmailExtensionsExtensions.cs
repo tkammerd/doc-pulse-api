@@ -1,9 +1,8 @@
-﻿using Esb.CustomerCommunication;
-using Esb.DelegatR;
-using Doc.Pulse.Core.Abstractions;
+﻿using Doc.Pulse.Core.Abstractions;
 using Doc.Pulse.Infrastructure.Extensions;
 using Doc.Pulse.Infrastructure.Services;
-using System.Reflection;
+using Esb.CustomerCommunication;
+using Esb.DelegatR;
 using System.Security.Cryptography.X509Certificates;
 
 namespace Doc.Pulse.Api.Setup

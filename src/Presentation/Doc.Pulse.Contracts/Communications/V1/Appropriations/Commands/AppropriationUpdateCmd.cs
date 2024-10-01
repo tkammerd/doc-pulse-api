@@ -1,6 +1,4 @@
-﻿using Doc.Pulse.Contracts.Communications.V1.Appropriations.Queries;
-
-namespace Doc.Pulse.Contracts.Communications.V1.Appropriations.Commands;
+﻿namespace Doc.Pulse.Contracts.Communications.V1.Appropriations.Commands;
 
 public class AppropriationUpdateCmd
 {
