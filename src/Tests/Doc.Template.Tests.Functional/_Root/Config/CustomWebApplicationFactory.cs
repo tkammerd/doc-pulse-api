@@ -1,18 +1,4 @@
-﻿using Doc.Pulse.Core.Abstractions;
-using Doc.Pulse.Core.Config;
-using Doc.Pulse.Core.Entities;
-using Doc.Pulse.Infrastructure.Data;
-using Doc.Pulse.Infrastructure.Extensions;
-using Doc.Pulse.Tests.Functional.TestSeedData;
-using Microsoft.AspNetCore.Authorization.Policy;
-using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Mvc.Testing;
-using Microsoft.AspNetCore.TestHost;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore.Diagnostics;
-using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
+﻿using Microsoft.AspNetCore.Mvc.Testing;
 
 namespace Doc.Pulse.Tests.Functional._Root.Config;
 

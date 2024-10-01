@@ -1,5 +1,5 @@
-﻿using FluentResults;
-using Doc.Pulse.Core.Abstractions;
+﻿using AppDmDoc.SharedKernel.Core.Abstractions;
+using FluentResults;
 using System.Net;
 
 namespace AppDmDoc.SharedKernel.Core.Entities;
@@ -14,7 +14,7 @@ public class ResultError : Error, IResultError
     protected ResultError() : base()
     {
         //Metadata = new Dictionary<string, object>();
-        Reasons = new List<IResultError>();
+        Reasons = [];
     }
     public ResultError(string message) : this()
     {
@@ -22,10 +22,7 @@ public class ResultError : Error, IResultError
     }
     public ResultError(string message, IResultError innerError) : this(message)
     {
-        if (innerError == null)
-        {
-            throw new ArgumentNullException(nameof(innerError));
-        }
+        ArgumentNullException.ThrowIfNull(innerError);
 
         Reasons.Add(innerError);
     }

@@ -1,15 +1,14 @@
-﻿using FluentValidation;
-using AppDmDoc.SharedKernel.Core.Abstractions;
+﻿using AppDmDoc.SharedKernel.Core.Abstractions;
 using AppDmDoc.SharedKernel.Core.Trouble.Errors;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
+using Doc.Pulse.Api.Extensions;
 using Doc.Pulse.Contracts.Communications.V1.Receipts.Commands;
 using Doc.Pulse.Infrastructure.Abstractions;
 using Doc.Pulse.Infrastructure.Data;
-using Ots.AppDmDoc.Abstractions.AutoMapper;
 using Doc.Pulse.Infrastructure.Extensions;
-using Doc.Pulse.Api.Extensions;
-using Doc.Pulse.Core.Entities;
+using FluentValidation;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Ots.AppDmDoc.Abstractions.AutoMapper;
 
 namespace Doc.Pulse.Api.Features.Receipts.Commands;
 

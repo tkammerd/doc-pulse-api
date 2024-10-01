@@ -1,25 +1,24 @@
-﻿using FluentValidation;
-using FluentValidation.AspNetCore;
-using AppDmDoc.SharedKernel.Core.Abstractions;
-using MediatR;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Extensions.Configuration;
-using Microsoft.Extensions.DependencyInjection;
-using Doc.Pulse.Core.Abstractions;
+﻿using AppDmDoc.SharedKernel.Core.Abstractions;
+using AppDmDoc.SharedKernel.Core.Entities;
 using Doc.Pulse.Core.Entities._Kernel;
 using Doc.Pulse.Core.Helpers;
 using Doc.Pulse.Infrastructure.Services;
 using Doc.Pulse.Infrastructure.Util;
+using FluentValidation;
+using FluentValidation.AspNetCore;
+using MediatR;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 using Ots.AppDmDoc.Abstractions.AutoMapper;
 using Ots.AppDmDoc.Abstractions.HashIds;
+using Ots.AppDmDoc.Adapters.Adapter.HashIds;
+using Ots.AppDmDoc.Adapters.Adapter.Mapper;
 using OtsLogger;
 using Serilog;
 using System.Net;
 using System.Reflection;
-using System.Security.Claims;
 using System.Text.Json;
-using Ots.AppDmDoc.Adapters.Adapter.HashIds;
-using Ots.AppDmDoc.Adapters.Adapter.Mapper;
 
 namespace Doc.Pulse.Infrastructure.Config;
 

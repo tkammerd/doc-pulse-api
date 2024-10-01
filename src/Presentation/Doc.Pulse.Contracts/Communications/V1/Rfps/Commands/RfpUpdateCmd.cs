@@ -1,6 +1,4 @@
-﻿using Doc.Pulse.Contracts.Communications.V1.Rfps.Queries;
-
-namespace Doc.Pulse.Contracts.Communications.V1.Rfps.Commands;
+﻿namespace Doc.Pulse.Contracts.Communications.V1.Rfps.Commands;
 
 public class RfpUpdateCmd
 {

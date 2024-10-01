@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using AppDmDoc.SharedKernel.Core.Abstractions;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Doc.Pulse.Core.Abstractions;
 
@@ -17,5 +18,5 @@ public abstract class EntityBase
     protected void RegisterDomainEvent(DomainEventBase domainEvent) => _domainEvents.Add(domainEvent);
     public void ClearEvents() => _domainEvents.Clear();
 
-    public bool HasDomainEvents => _domainEvents.Any();
+    public bool HasDomainEvents => _domainEvents.Count != 0;
 }

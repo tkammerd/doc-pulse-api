@@ -1,6 +1,4 @@
-﻿using Doc.Pulse.Contracts.Communications.V1.Programs.Queries;
-
-namespace Doc.Pulse.Contracts.Communications.V1.Programs.Commands;
+﻿namespace Doc.Pulse.Contracts.Communications.V1.Programs.Commands;
 
 public class ProgramUpdateCmd
 {

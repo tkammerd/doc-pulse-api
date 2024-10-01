@@ -1,6 +1,6 @@
 ﻿using MediatR;
 
-namespace Doc.Pulse.Core.Abstractions;
+namespace AppDmDoc.SharedKernel.Core.Abstractions;
 
 public abstract class DomainEventBase : INotification
 {

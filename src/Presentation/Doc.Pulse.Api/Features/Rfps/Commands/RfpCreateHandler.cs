@@ -8,7 +8,6 @@ using Doc.Pulse.Infrastructure.Data;
 using Doc.Pulse.Infrastructure.Extensions;
 using FluentValidation;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Ots.AppDmDoc.Abstractions.AutoMapper;
 
 namespace Doc.Pulse.Api.Features.Rfps.Commands;

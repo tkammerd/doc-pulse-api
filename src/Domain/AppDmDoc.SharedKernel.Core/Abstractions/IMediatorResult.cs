@@ -1,6 +1,6 @@
 ﻿using FluentResults;
 
-namespace Doc.Pulse.Core.Abstractions;
+namespace AppDmDoc.SharedKernel.Core.Abstractions;
 
 public interface IMediatorResult : IResultBase
 {

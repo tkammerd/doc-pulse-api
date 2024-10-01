@@ -1,5 +1,4 @@
 ﻿using Doc.Pulse.Core.Abstractions;
-using Doc.Pulse.Core.Entities;
 using Doc.Pulse.Core.Entities._Kernel;
 using Doc.Pulse.Infrastructure.Extensions;
 using MediatR;

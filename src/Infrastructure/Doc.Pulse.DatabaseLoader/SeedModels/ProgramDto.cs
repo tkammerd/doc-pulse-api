@@ -1,6 +1,4 @@
-﻿using Doc.Pulse.Core.Entities;
-
-namespace Doc.Pulse.DatabaseLoader.SeedModels;
+﻿namespace Doc.Pulse.DatabaseLoader.SeedModels;
 
 internal class ProgramDto
 {

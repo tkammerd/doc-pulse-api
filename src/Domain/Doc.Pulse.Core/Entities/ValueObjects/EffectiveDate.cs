@@ -6,7 +6,7 @@ namespace Doc.Pulse.Core.Entities.ValueObjects;
 public class EffectiveDate : ValueObject
 {
     private readonly TimeProvider? _defaultEffectiveClockProvider;
-    private DateTimeOffset? _effective;
+    private readonly DateTimeOffset? _effective;
     public DateTimeOffset Effective { get { return _effective ?? _defaultEffectiveClockProvider?.GetLocalNow() ?? throw new ArgumentNullException("IDateTimeProvider"); } }
 
     private EffectiveDate() { }

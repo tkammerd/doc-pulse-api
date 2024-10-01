@@ -1,5 +1,4 @@
-﻿using Doc.Pulse.Core.Attributes;
-using Doc.Pulse.Core.Entities;
+﻿using Doc.Pulse.Core.Entities;
 
 namespace Doc.Pulse.DatabaseLoader.SeedModels;
 

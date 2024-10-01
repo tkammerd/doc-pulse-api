@@ -1,20 +1,17 @@
-using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Authorization.Policy;
-using Microsoft.AspNetCore.Mvc.Authorization;
-using Microsoft.EntityFrameworkCore;
-using Ots.Auth.SharedComponents.Extensions;
 using Doc.Pulse.Api.Setup;
 using Doc.Pulse.Api.Setup.Auth;
-using Doc.Pulse.Api.Setup.Database;
+using Doc.Pulse.Api.Setup.Configuration;
 using Doc.Pulse.Api.Setup.Logging;
 using Doc.Pulse.Api.Setup.Swagger;
 using Doc.Pulse.Infrastructure.Config;
 using Doc.Pulse.Infrastructure.Data;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Authorization.Policy;
+using Microsoft.AspNetCore.Mvc.Authorization;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.OpenApi.Models;
 using OtsLogger;
 using Serilog;
-using Doc.Pulse.Api.logs;
-using Doc.Pulse.Api.Setup.Configuration;
-using Microsoft.OpenApi.Models;
 using System.Reflection;
 
 

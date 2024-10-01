@@ -1,5 +1,4 @@
-﻿using Doc.Pulse.Core.Entities;
-//using Doc.Pulse.Core.Entities.GlComponents;
+﻿//using Doc.Pulse.Core.Entities.GlComponents;
 
 namespace Doc.Pulse.Tests.Functional.TestSeedData;
 

@@ -1,12 +1,11 @@
 ﻿using Doc.Pulse.Contracts.Interfaces;
+using Doc.Pulse.Core.Attributes;
 using Doc.Pulse.Core.Config;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.ComponentModel;
 using System.Linq.Expressions;
 using System.Reflection;
 using System.Text.Json;
-using Doc.Pulse.Core.Attributes;
 
 namespace Doc.Pulse.Infrastructure.Extensions;
 

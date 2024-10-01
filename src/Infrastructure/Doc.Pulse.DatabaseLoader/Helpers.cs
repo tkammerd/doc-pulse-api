@@ -1,14 +1,8 @@
 ﻿using CsvHelper;
-using Doc.Pulse.Core.Entities;
 using Doc.Pulse.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Doc.Pulse.DatabaseLoader;
 internal class Helpers

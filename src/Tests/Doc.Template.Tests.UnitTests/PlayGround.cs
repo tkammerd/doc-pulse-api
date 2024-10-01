@@ -1,8 +1,4 @@
-﻿using Doc.Pulse.Core.Entities;
-using Doc.Pulse.Infrastructure.Data;
-using Microsoft.EntityFrameworkCore;
-
-namespace Doc.Pulse.Tests.UnitTests;
+﻿namespace Doc.Pulse.Tests.UnitTests;
 public class PlayGround
 {
     private class TestClass(string x)

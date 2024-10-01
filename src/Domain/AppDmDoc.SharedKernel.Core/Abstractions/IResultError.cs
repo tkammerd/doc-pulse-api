@@ -1,7 +1,7 @@
 ﻿using FluentResults;
 using System.Net;
 
-namespace Doc.Pulse.Core.Abstractions;
+namespace AppDmDoc.SharedKernel.Core.Abstractions;
 
 public interface IResultError : IError
 {
