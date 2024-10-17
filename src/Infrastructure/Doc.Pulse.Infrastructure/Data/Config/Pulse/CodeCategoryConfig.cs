@@ -23,5 +23,7 @@ internal class CodeCategoryConfig: IEntityTypeConfiguration<CodeCategory>
         builder.Property(e => e.CategoryName)
             .HasColumnType("varchar")
             .HasMaxLength(255);
+
+        builder.Property(p => p.RowVersion).IsRowVersion();
     }
 }

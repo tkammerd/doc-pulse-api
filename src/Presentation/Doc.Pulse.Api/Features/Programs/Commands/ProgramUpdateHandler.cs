@@ -1,14 +1,14 @@
-﻿using FluentValidation;
-using AppDmDoc.SharedKernel.Core.Abstractions;
+﻿using AppDmDoc.SharedKernel.Core.Abstractions;
 using AppDmDoc.SharedKernel.Core.Trouble.Errors;
-using MediatR;
-using Microsoft.EntityFrameworkCore;
+using Doc.Pulse.Api.Extensions;
 using Doc.Pulse.Contracts.Communications.V1.Programs.Commands;
 using Doc.Pulse.Infrastructure.Abstractions;
 using Doc.Pulse.Infrastructure.Data;
-using Ots.AppDmDoc.Abstractions.AutoMapper;
 using Doc.Pulse.Infrastructure.Extensions;
-using Doc.Pulse.Api.Extensions;
+using FluentValidation;
+using MediatR;
+using Microsoft.EntityFrameworkCore;
+using Ots.AppDmDoc.Abstractions.AutoMapper;
 
 namespace Doc.Pulse.Api.Features.Programs.Commands;
 
@@ -27,12 +27,20 @@ public class ProgramUpdateHandler
         {
             _dbContext = dbContext;
             var keyFieldDescription = "ProgramCode".SplitCamelCase();
+            var tableDescription = "Programs";
 
-            RuleFor(o => o.Id).NotNull().NotEqual(0)
+            RuleFor(p => p.Id).NotNull().NotEqual(0)
                 .WithMessage($"Id not valid: Please indicate a valid Identifier.");
             RuleFor(p => p.ProgramCode).NotNull().Length(3, 255);
             RuleFor(p => p.ProgramName).Length(3, 255).When(n => n != null);
             RuleFor(p => p.ProgramDescription).Length(3, 255).When(n => n != null);
+            RuleFor(p => p)
+                .Must(command => {
+                    var updatingEntity = _dbContext.Programs.FirstOrDefault(o => o.Id == command.Id);
+                    return (updatingEntity?.RowVersion ?? []).SequenceEqual(command.RowVersion ?? []);
+                })
+                .WithErrorCode("RowVersionCheck")
+                .WithMessage($"'{tableDescription}' record was changed by another user. Please refresh your browser.");
 
             RuleFor(p => p)
                 .Must(KeyFieldIsUnique)

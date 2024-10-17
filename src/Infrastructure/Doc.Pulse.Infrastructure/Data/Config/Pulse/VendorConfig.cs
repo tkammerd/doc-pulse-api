@@ -22,5 +22,7 @@ internal class VendorConfig : IEntityTypeConfiguration<Vendor>
 
         builder.Property(e => e.Inactive)
             .IsRequired();
+
+        builder.Property(p => p.RowVersion).IsRowVersion();
     }
 }

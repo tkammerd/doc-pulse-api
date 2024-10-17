@@ -27,10 +27,18 @@ public class AgencyUpdateHandler
         {
             _dbContext = dbContext;
             var keyFieldDescription = "CodeNumber".SplitCamelCase();
+            var tableDescription = "Agencies";
 
             RuleFor(o => o.Id).NotNull().NotEqual(0)
                 .WithMessage($"Id not valid: Please indicate a valid Identifier.");
             RuleFor(o => o.AgencyName).NotNull().Length(3, 255);
+            RuleFor(p => p)
+                .Must(command => {
+                    var updatingEntity = _dbContext.Agencies.FirstOrDefault(o => o.Id == command.Id);
+                    return (updatingEntity?.RowVersion ?? []).SequenceEqual(command.RowVersion ?? []);
+                })
+                .WithErrorCode("RowVersionCheck")
+                .WithMessage($"'{tableDescription}' record was changed by another user. Please refresh your browser.");
 
             RuleFor(p => p)
                 .Must(KeyFieldIsUnique)

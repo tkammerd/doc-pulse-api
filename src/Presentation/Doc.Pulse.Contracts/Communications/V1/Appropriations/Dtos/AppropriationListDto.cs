@@ -15,4 +15,5 @@ public class AppropriationListDto
     public decimal? ProjectedAmount { get; set; }
     public decimal? PriorYearActualAmount { get; set; }
     public decimal? TotalObligated { get; set; }
+    public byte[]? RowVersion { get; set; } = null;
 }

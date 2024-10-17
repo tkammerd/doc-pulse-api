@@ -27,8 +27,9 @@ public class RfpUpdateHandler
         {
             _dbContext = dbContext;
             var keyFieldDescription = "FacilityAndFiscalYearAndRFPNumber".SplitCamelCase();
+            var tableDescription = "RFPs";
 
-            RuleFor(o => o.Id).NotNull().NotEqual(0)
+            RuleFor(p => p.Id).NotNull().NotEqual(0)
                 .WithMessage($"Id not valid: Please indicate a valid Identifier.");
             RuleFor(p => p.Facility).NotNull().Length(3, 255);
             RuleFor(p => p.FiscalYear).NotNull().GreaterThan(2020);
@@ -46,6 +47,13 @@ public class RfpUpdateHandler
             RuleFor(p => p.ReportingCategory).Length(3, 255).When(n => n != null);
             RuleFor(p => p.VerifiedOnIsis).Length(1, 255).When(n => n != null);
             RuleFor(p => p.RequestedBy).Length(3, 255).When(n => n != null);
+            RuleFor(p => p)
+                .Must(command => {
+                        var updatingEntity = _dbContext.Rfps.FirstOrDefault(o => o.Id == command.Id);
+                        return (updatingEntity?.RowVersion ?? []).SequenceEqual(command.RowVersion ?? []);
+                    })
+                .WithErrorCode("RowVersionCheck")
+                .WithMessage($"'{tableDescription}' record was changed by another user. Please refresh your browser.");
 
             RuleFor(p => p)
                 .Must(KeyFieldIsUnique)

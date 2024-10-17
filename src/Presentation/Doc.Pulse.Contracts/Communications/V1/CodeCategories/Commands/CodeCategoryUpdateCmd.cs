@@ -7,4 +7,5 @@ public class CodeCategoryUpdateCmd
     public string CategoryShortName { get; set; } = null!;
     public string? CategoryName { get; set; }
     public bool Inactive { get; set; } = false;
+    public byte[]? RowVersion { get; set; }
 }

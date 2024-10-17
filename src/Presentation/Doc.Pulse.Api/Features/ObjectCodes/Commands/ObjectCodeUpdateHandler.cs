@@ -27,16 +27,24 @@ public class ObjectCodeUpdateHandler
         {
             _dbContext = dbContext;
             var keyFieldDescription = "CodeNumber".SplitCamelCase();
+            var tableDescription = "Object Codes";
 
             RuleFor(o => o.Id).NotNull().NotEqual(0)
                 .WithMessage($"Id not valid: Please indicate a valid Identifier.");
             RuleFor(o => o.CodeNumber).NotNull().InclusiveBetween(1000000, 9999999);
             RuleFor(o => o.CodeName).NotNull().Length(3, 255);
+            RuleFor(p => p)
+                .Must(command => {
+                    var updatingEntity = _dbContext.ObjectCodes.FirstOrDefault(o => o.Id == command.Id);
+                    return (updatingEntity?.RowVersion ?? []).SequenceEqual(command.RowVersion ?? []);
+                })
+                .WithErrorCode("RowVersionCheck")
+                .WithMessage($"'{tableDescription}' record was changed by another user. Please refresh your browser.");
 
             RuleFor(p => p)
-                .Must(KeyFieldIsUnique)
-                .WithErrorCode("UniqueFieldValidator")
-                .WithMessage($"'{keyFieldDescription}' must be unique.");
+                    .Must(KeyFieldIsUnique)
+                    .WithErrorCode("UniqueFieldValidator")
+                    .WithMessage($"'{keyFieldDescription}' must be unique.");
         }
 
         private bool KeyFieldIsUnique(ObjectCodeUpdateCmd cmd)

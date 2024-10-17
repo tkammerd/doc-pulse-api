@@ -8,4 +8,5 @@ public class ObjectCodeGetByIdResponse
     public string CodeName { get; set; } = null!;
     public int? CodeCategoryId { get; set; }
     public bool Inactive { get; set; } = false;
+    public byte[]? RowVersion { get; set; } = null;
 }

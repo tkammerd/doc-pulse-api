@@ -47,9 +47,11 @@ internal class AppropriationConfig : IEntityTypeConfiguration<Appropriation>
         
         builder.Property(e => e.PriorYearActualAmount)
             .HasColumnType("money");
-        
+
         builder.Property(e => e.TotalObligated)
             .HasColumnType("money");
+
+        builder.Property(p => p.RowVersion).IsRowVersion();
 
         builder.HasOne(p => p.Program)
             .WithMany(p => p.Appropriations)

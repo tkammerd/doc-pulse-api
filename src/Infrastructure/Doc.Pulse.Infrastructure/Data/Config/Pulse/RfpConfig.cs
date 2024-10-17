@@ -77,6 +77,8 @@ internal class RfpConfig : IEntityTypeConfiguration<Rfp>
             .HasColumnType("varchar")
             .HasMaxLength(255);
 
+        builder.Property(p => p.RowVersion).IsRowVersion();
+
         builder.HasOne(p => p.ObjectCode)
             .WithMany(p => p.Rfps)
             .HasForeignKey(p => p.ObjectCodeId);

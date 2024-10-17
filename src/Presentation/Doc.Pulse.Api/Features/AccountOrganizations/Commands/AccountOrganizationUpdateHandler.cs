@@ -27,10 +27,18 @@ public class AccountOrganizationUpdateHandler
         {
             _dbContext = dbContext;
             var keyFieldDescription = "AccountOrganizationNumber".SplitCamelCase();
+            var tableDescription = "Account Organizations";
 
             RuleFor(o => o.Id).NotNull().NotEqual(0)
                 .WithMessage($"Id not valid: Please indicate a valid Identifier.");
             RuleFor(o => o.AccountOrganizationNumber).NotNull().Length(3, 255);
+            RuleFor(p => p)
+                .Must(command => {
+                    var updatingEntity = _dbContext.AccountOrganizations.FirstOrDefault(o => o.Id == command.Id);
+                    return (updatingEntity?.RowVersion ?? []).SequenceEqual(command.RowVersion ?? []);
+                })
+                .WithErrorCode("RowVersionCheck")
+                .WithMessage($"'{tableDescription}' record was changed by another user. Please refresh your browser.");
 
             RuleFor(p => p)
                 .Must(KeyFieldIsUnique)

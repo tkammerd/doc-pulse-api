@@ -27,12 +27,20 @@ public class CodeCategoryUpdateHandler
         {
             _dbContext = dbContext;
             var keyFieldDescription = "CategoryNumber".SplitCamelCase();
+            var tableDescription = "Code Categories";
 
             RuleFor(p => p.Id).NotNull().NotEqual(0)
                 .WithMessage($"Id not valid: Please indicate a valid Identifier.");
             RuleFor(p => p.CategoryNumber).NotNull().InclusiveBetween(51, 59);
             RuleFor(p => p.CategoryShortName).Length(3, 255).When(n => n != null);
             RuleFor(p => p.CategoryName).Length(3, 255).When(n => n != null);
+            RuleFor(p => p)
+                .Must(command => {
+                    var updatingEntity = _dbContext.CodeCategories.FirstOrDefault(o => o.Id == command.Id);
+                    return (updatingEntity?.RowVersion ?? []).SequenceEqual(command.RowVersion ?? []);
+                })
+                .WithErrorCode("RowVersionCheck")
+                .WithMessage($"'{tableDescription}' record was changed by another user. Please refresh your browser.");
 
             RuleFor(p => p)
                 .Must(KeyFieldIsUnique)

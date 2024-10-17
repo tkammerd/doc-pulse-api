@@ -47,6 +47,8 @@ internal class ReceiptConfig : IEntityTypeConfiguration<Receipt>
 
         builder.Property(e => e.CheckDate); // Defaults from model
 
+        builder.Property(p => p.RowVersion).IsRowVersion();
+
         builder.HasOne(p => p.Rfp)
             .WithMany(p => p.Receipts)
             .HasForeignKey(p => p.RfpId);

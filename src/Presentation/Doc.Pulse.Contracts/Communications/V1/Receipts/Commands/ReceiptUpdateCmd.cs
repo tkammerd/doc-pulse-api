@@ -13,4 +13,5 @@ public class ReceiptUpdateCmd
     public string? ReceiverNumber { get; set; } = null!;
     public string? CheckNumber { get; set; } = null!;
     public DateTimeOffset? CheckDate { get; set; }
+    public byte[]? RowVersion { get; set; }
 }

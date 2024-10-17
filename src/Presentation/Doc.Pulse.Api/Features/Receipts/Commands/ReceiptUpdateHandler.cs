@@ -27,11 +27,19 @@ public class ReceiptUpdateHandler
         {
             _dbContext = dbContext;
             var keyFieldDescription = "FacilityAndFiscalYearAndReceiptNumber".SplitCamelCase();
+            var tableDescription = "Receipts";
 
-            RuleFor(o => o.Facility).NotNull().Length(3, 255);
+            RuleFor(p => p.Facility).NotNull().Length(3, 255);
             RuleFor(p => p.FiscalYear).NotNull().GreaterThan(2020);
             RuleFor(p => p.ReceiptNumber).NotNull().InclusiveBetween(100, 99999);
             RuleFor(p => p.RfpId).GreaterThan(0).When(n => n != null);
+            RuleFor(p => p)
+                .Must(command => {
+                    var updatingEntity = _dbContext.Receipts.FirstOrDefault(o => o.Id == command.Id);
+                    return (updatingEntity?.RowVersion ?? []).SequenceEqual(command.RowVersion ?? []);
+                })
+                .WithErrorCode("RowVersionCheck")
+                .WithMessage($"'{tableDescription}' record was changed by another user. Please refresh your browser.");
 
             RuleFor(p => p)
                 .Must(KeyFieldIsUnique)

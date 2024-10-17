@@ -8,4 +8,5 @@ public class ProgramListDto
     public string? ProgramName { get; set; }
     public string? ProgramDescription { get; set; }
     public bool Inactive { get; set; } = false;
+    public byte[]? RowVersion { get; set; } = null;
 }

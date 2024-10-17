@@ -26,5 +26,7 @@ internal class AccountOrganizationConfig : IEntityTypeConfiguration<AccountOrgan
 
         builder.Property(e => e.Inactive)
             .IsRequired();
+
+        builder.Property(p => p.RowVersion).IsRowVersion();
     }
 }

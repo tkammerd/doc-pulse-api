@@ -7,4 +7,5 @@ public class ObjectCodeUpdateCmd
     public string CodeName { get; set; } = default!;
     public int? CodeCategoryId { get; set; } = default!;
     public bool Inactive { get; set; } = default!;
+    public byte[]? RowVersion { get; set; }
 }

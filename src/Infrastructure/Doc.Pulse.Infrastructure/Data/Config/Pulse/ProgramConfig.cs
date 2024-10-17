@@ -30,5 +30,7 @@ internal class ProgramConfig : IEntityTypeConfiguration<Program>
 
         builder.Property(e => e.Inactive)
             .IsRequired();
+
+        builder.Property(p => p.RowVersion).IsRowVersion();
     }
 }

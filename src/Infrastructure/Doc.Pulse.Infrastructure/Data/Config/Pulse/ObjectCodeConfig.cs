@@ -20,6 +20,8 @@ internal class ObjectCodeConfig : IEntityTypeConfiguration<ObjectCode>
             .HasColumnType("varchar")
             .HasMaxLength(255);
 
+        builder.Property(p => p.RowVersion).IsRowVersion();
+
         builder.HasOne(p => p.CodeCategory)
             .WithMany(p => p.ObjectCodes)
             .HasForeignKey(p => p.CodeCategoryId);

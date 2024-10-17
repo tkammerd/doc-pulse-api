@@ -5,4 +5,5 @@ public class VendorUpdateCmd
     public int Id { get; set; }
     public string VendorName { get; set; } = null!;
     public bool Inactive { get; set; } = false;
+    public byte[]? RowVersion { get; set; }
 }

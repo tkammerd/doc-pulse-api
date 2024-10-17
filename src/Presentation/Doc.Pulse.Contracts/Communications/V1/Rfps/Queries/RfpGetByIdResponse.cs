@@ -22,4 +22,5 @@ public class RfpGetByIdResponse
     public string? ReportingCategory { get; set; }
     public string? VerifiedOnIsis { get; set; }
     public string? RequestedBy { get; set; }
+    public byte[]? RowVersion { get; set; } = null;
 }

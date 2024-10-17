@@ -10,4 +10,5 @@ public abstract class AuditableEntityBase<IdType> : EntityBase<IdType>, IAuditab
     public DateTimeOffset Modified { get; set; }
     public int? ModifiedUserId { get; set; }
     public UserStub? ModifiedUser { get; set; }
+    public byte[]? RowVersion { get; set; }
 }

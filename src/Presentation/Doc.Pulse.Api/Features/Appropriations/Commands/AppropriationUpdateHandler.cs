@@ -25,6 +25,7 @@ public class AppropriationUpdateHandler
         public DbContextValidator(AppDbContext dbContext)
         {
             _dbContext = dbContext;
+            var tableDescription = "Appropriations";
 
             RuleFor(o => o.Id).NotNull().NotEqual(0)
                 .WithMessage($"Id not valid: Please indicate a valid Identifier.");
@@ -32,6 +33,13 @@ public class AppropriationUpdateHandler
             RuleFor(o => o.FiscalYear).NotNull().GreaterThan(2020);
             RuleFor(o => o.ProgramId).NotNull().GreaterThan(0);
             RuleFor(o => o.ObjectCodeId).NotNull().GreaterThan(0);
+            RuleFor(p => p)
+                .Must(command => {
+                    var updatingEntity = _dbContext.Appropriations.FirstOrDefault(o => o.Id == command.Id);
+                    return (updatingEntity?.RowVersion ?? []).SequenceEqual(command.RowVersion ?? []);
+                })
+                .WithErrorCode("RowVersionCheck")
+                .WithMessage($"'{tableDescription}' record was changed by another user. Please refresh your browser.");
         }
     }
 

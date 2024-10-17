@@ -6,4 +6,5 @@ public class AgencyListDto
 
     public string AgencyName { get; set; } = null!;
     public bool Inactive { get; set; } = false;
+    public byte[]? RowVersion { get; set; } = null;
 }

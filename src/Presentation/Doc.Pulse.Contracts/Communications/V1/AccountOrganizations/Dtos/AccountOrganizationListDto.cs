@@ -7,4 +7,5 @@ public class AccountOrganizationListDto
     public string AccountOrganizationNumber { get; set; } = null!;
     public string? CostCenterDescription { get; set; }
     public bool Inactive { get; set; } = false;
+    public byte[]? RowVersion { get; set; } = null;
 }
